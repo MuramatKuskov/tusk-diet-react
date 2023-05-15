@@ -1,4 +1,10 @@
 .header {
-	padding: 30px 50px;
-	background-color: var(--tg-theme-bg-color);
+	padding: 40px 50px;
+	background-color: var(--tg-theme-secondary-bg-color);
+}
+
+.covering {
+	font-size: 28;
+	font-weight: 600;
+	color: linear-gradient(to right, #d88417, #c7a407);
 }
