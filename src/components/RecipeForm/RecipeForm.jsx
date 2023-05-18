@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
+const url = process.env.backURL;
 
 const RecipeForm = () => {
 	const [recipe, setRecipe] = useState({
@@ -18,7 +19,8 @@ const RecipeForm = () => {
 
 	const pushRecipe = useCallback(() => {
 		console.log('Send recipe to back');
-		fetch('http://localhost:8000', {
+		console.log(url + '/web-data');
+		fetch(url + '/web-data', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
