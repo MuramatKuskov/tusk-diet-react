@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTelegram } from './hooks/useTelegram';
+import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
 
-const RecipeForm = (props) => {
+const RecipeForm = () => {
 	const [recipe, setRecipe] = useState({
 		title: "",
 		ingredients: "",
@@ -14,6 +14,17 @@ const RecipeForm = (props) => {
 
 	useEffect(() => {
 		tg.ready();
+	}, []);
+
+	const pushRecipe = useCallback(() => {
+		console.log('Send recipe to back');
+		fetch('http://localhost:8000', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ queryId, recipe })
+		});
 	}, []);
 
 	useEffect(() => {
@@ -34,17 +45,6 @@ const RecipeForm = (props) => {
 			})
 		}
 	}, [recipe.title, recipe.ingredients, recipe.process])
-
-	const pushRecipe = useCallback(() => {
-		console.log('Send recipe to back');
-		fetch('http://localhost:8000', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ queryId, recipe })
-		});
-	}, []);
 
 	const setTitle = (e) => {
 		setRecipe(prev => ({
