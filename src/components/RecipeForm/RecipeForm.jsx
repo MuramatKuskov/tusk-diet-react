@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
-const url = process.env.backURL;
+//const url = process.env.backURL;
+const url = 'https://tuskdietbackend.netlify.app';
 
 const RecipeForm = () => {
 	const [recipe, setRecipe] = useState({
@@ -19,7 +20,6 @@ const RecipeForm = () => {
 
 	const pushRecipe = useCallback(() => {
 		console.log('Send recipe to back');
-		console.log(url + '/web-data');
 		fetch(url + '/web-data', {
 			method: 'POST',
 			headers: {
@@ -53,7 +53,6 @@ const RecipeForm = () => {
 			...prev,
 			title: e.target.value
 		}));
-		/* handleMainBtn(); */
 	}
 
 	const setIngredients = (e) => {
@@ -61,7 +60,6 @@ const RecipeForm = () => {
 			...prev,
 			ingredients: e.target.value
 		}));
-		/* handleMainBtn(); */
 	}
 
 	const setProcess = (e) => {
@@ -69,7 +67,6 @@ const RecipeForm = () => {
 			...prev,
 			process: e.target.value
 		}));
-		/* handleMainBtn(); */
 	}
 
 	const setLink = (e) => {
@@ -77,7 +74,6 @@ const RecipeForm = () => {
 			...prev,
 			link: e.target.value
 		}));
-		/* handleMainBtn(); */
 	}
 
 	const setTags = (e) => {
@@ -85,20 +81,7 @@ const RecipeForm = () => {
 			...prev,
 			tags: e.target.value
 		}));
-		/* handleMainBtn(); */
 	}
-
-	/* const handleMainBtn = () => {
-		if (recipe.title.length > 3
-			&& recipe.ingredients.length > 0
-			&& recipe.process.length > 3
-		) {
-			tg.MainButton.show();
-			tg.MainButton.setParams({
-				text: 'Добавить рецепт'
-			})
-		}
-	} */
 
 	return (
 		<>
