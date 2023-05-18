@@ -1,10 +1,12 @@
 .header {
 	padding: 40px 50px;
+	background-color: #212121;
 	background-color: var(--tg-theme-secondary-bg-color);
 }
 
 .covering {
 	font-size: 28;
 	font-weight: 600;
-	color: linear-gradient(to right, #d88417, #c7a407);
+	color: #ffffff;
+	color: var(--tg-theme-text-color);
 }
