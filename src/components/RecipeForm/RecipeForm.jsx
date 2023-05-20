@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
-//const url = process.env.backURL;
-const url = 'https://tuskdietbackend.netlify.app';
+const url = process.env.backURL;
 
 const RecipeForm = () => {
 	const [recipe, setRecipe] = useState({
@@ -18,15 +17,16 @@ const RecipeForm = () => {
 		tg.ready();
 	}, []);
 
-	const pushRecipe = useCallback(() => {
+	const pushRecipe = useCallback(async () => {
 		console.log('Send recipe to back');
-		fetch(url + '/web-data', {
+		const response = await fetch(url + '/.netlify/functions/push-recipe', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ queryId, recipe })
 		});
+		console.log(response);
 	}, []);
 
 	useEffect(() => {
@@ -107,6 +107,7 @@ const RecipeForm = () => {
 					<label className='recipe-label' htmlFor="tags">Тэги</label>
 					<input onChange={setTags} className='recipe-input' type="text" name='tags' id='tags' placeholder='Тэги' />
 				</fieldset>
+				<button type='button' onClick={pushRecipe}>Push</button>
 			</form>
 		</>
 	);
