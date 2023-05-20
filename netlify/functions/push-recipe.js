@@ -1,4 +1,4 @@
-exports.pushRecipe = async (req, res) => {
+exports.handler = async (req, res) => {
 	try {
 		console.log(req.body);
 		return {
