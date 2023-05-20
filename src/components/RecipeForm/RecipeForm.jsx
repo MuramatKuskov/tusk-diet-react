@@ -19,7 +19,7 @@ const RecipeForm = () => {
 
 	const pushRecipe = useCallback(async () => {
 		console.log('Send recipe to back');
-		const response = await fetch(url + '/.netlify/functions/push-recipe', {
+		const response = await fetch('/.netlify/functions/push-recipe', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
