@@ -1,9 +1,9 @@
 exports.handler = async (req, res) => {
 	try {
-		console.log(req.body);
+		console.log(req.body); // {"recipe":{"title":"","ingredients":"","process":"","link":"","tags":""}}
 		return {
 			statusCode: 200,
-			body: JSON.stringify({ mes: 'Hello, World!' })
+			body: 'msg'
 		}
 	} catch (error) {
 		console.log(error);

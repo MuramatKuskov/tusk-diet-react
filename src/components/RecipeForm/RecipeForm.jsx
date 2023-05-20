@@ -18,7 +18,6 @@ const RecipeForm = () => {
 	}, []);
 
 	const pushRecipe = useCallback(async () => {
-		console.log('Send recipe to back');
 		const response = await fetch('/.netlify/functions/push-recipe', {
 			method: 'POST',
 			headers: {
@@ -26,7 +25,21 @@ const RecipeForm = () => {
 			},
 			body: JSON.stringify({ queryId, recipe })
 		});
-		console.log(response);
+		if (response.status === 200) {
+			await bot.answerWebAppQuery(queryId, {
+				type: 'article',
+				id: queryId,
+				title: 'Успех',
+				input_message_content: { message_text: 'Рецепт добавлен' }
+			});
+		} else {
+			await bot.answerWebAppQuery(queryId, {
+				type: 'article',
+				id: queryId,
+				title: 'Неудача',
+				input_message_content: { message_text: 'Не удалось добавить рецепт' }
+			});
+		}
 	}, []);
 
 	useEffect(() => {
