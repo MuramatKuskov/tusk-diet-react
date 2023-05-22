@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
-const backURL = 'https://3eysahfimt.us-east-1.awsapprunner.com';
+const backURL = 'ec2-13-53-243-222.eu-north-1.compute.amazonaws.com';
 
 const RecipeForm = () => {
 	const [recipe, setRecipe] = useState({
