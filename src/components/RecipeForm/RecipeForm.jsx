@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
-const backURL = process.env.backURL;
+const backURL = 'https://3eysahfimt.us-east-1.awsapprunner.com';
 
 const RecipeForm = () => {
 	const [recipe, setRecipe] = useState({
@@ -18,7 +18,6 @@ const RecipeForm = () => {
 	}, []);
 
 	const pushRecipe = useCallback(async () => {
-		console.log(process.env);
 		const response = await fetch(backURL, {
 			method: 'POST',
 			headers: {
