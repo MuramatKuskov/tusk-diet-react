@@ -18,7 +18,7 @@ const RecipeForm = () => {
 	}, []);
 
 	const pushRecipe = useCallback(async () => {
-		const response = await fetch(backURL, {
+		const response = await fetch(backURL + '/pushRecipe', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
