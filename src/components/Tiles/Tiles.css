@@ -1,0 +1,11 @@
+.tiles {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5em;
+	margin: 2em 0 2em;
+}
+
+.tiles-item {
+	padding: 70px;
+	border: 2px solid darkslategray;
+}

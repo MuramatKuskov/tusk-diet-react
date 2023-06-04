@@ -1,0 +1,30 @@
+.recipe-form {
+	margin-top: 2em;
+}
+
+.recipe-field {
+	margin-bottom: 1.5em;
+}
+
+.recipe-label, .recipe-input {
+	display: block;
+}
+
+.recipe-label {
+	margin: 0 5em 1em;
+	font-size: 1.1em;
+}
+
+.recipe-input {
+	margin: 0 auto;
+	padding: 1em;
+	width: 80%;
+	border: 1px solid;
+	border-radius: 0.7em;
+	outline: none;
+	background-color: var(--tg-theme-bg-color);
+}
+
+.recipe-input::placeholder {
+	color: var(--secondary-text-color);
+}

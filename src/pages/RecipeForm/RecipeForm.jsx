@@ -13,21 +13,37 @@ const RecipeForm = () => {
 	});
 	const { tg, queryId } = useTelegram();
 
-	useEffect(() => {
-		tg.ready();
-	}, []);
-
 	const pushRecipe = useCallback(async () => {
-		const response = await fetch(backURL + '/pushRecipe', {
+		fetch('https://13.53.243.222/smth').then(resp => {
+			console.log(resp);
+			const reader = resp.body.getReader();
+			return reader.read();
+		}).then(({ done, value }) => {
+			if (done) {
+				console.log('gg');
+				return;
+			}
+			const data = new TextDecoder().decode(value);
+			console.log(data);
+		});
+		/* fetch('http://13.53.243.222/pushRecipe', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ queryId, recipe })
-		});
-		if (response.status === 200) {
-			// doSmth()
-		}
+		})
+			.then(resp => {
+				const reader = resp.body.getReader();
+				return reader.read();
+			}).then(({ done, value }) => {
+				if (done) {
+					console.log('gg');
+					return;
+				}
+				const data = new TextDecoder().decode(value);
+				console.log(data);
+			}); */
 	}, []);
 
 	useEffect(() => {
@@ -85,32 +101,32 @@ const RecipeForm = () => {
 	}
 
 	return (
-		<>
+		<div className='page'>
 			<h2 className='title'>Добавить рецепт</h2>
 			<form className='recipe-form'>
-				<fieldset className='recipe-field'>
+				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="title">Название блюда</label>
 					<input onChange={setTitle} className='recipe-input' type="text" name='title' id='title' placeholder='Название' />
-				</fieldset>
-				<fieldset className='recipe-field'>
+				</div>
+				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="ingredients">Ингредиенты</label>
 					<input onChange={setIngredients} className='recipe-input' type="text" name='ingredients' id='ingredients' placeholder='Ингредиенты' />
-				</fieldset>
-				<fieldset className='recipe-field'>
+				</div>
+				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="process">Приготовление</label>
-					<textarea onChange={setProcess} className='recipe-input' name='process' id='process' placeholder='Приготовление' cols="30" rows="10"></textarea>
-				</fieldset>
-				<fieldset className='recipe-field'>
+					<textarea onChange={setProcess} className='recipe-input' name='process' id='process' placeholder='Приготовление' rows="6"></textarea>
+				</div>
+				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="link">Link</label>
 					<input onChange={setLink} className='recipe-input' type="url" name='ingredients' id='link' placeholder='Link' />
-				</fieldset>
-				<fieldset className='recipe-field'>
+				</div>
+				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="tags">Тэги</label>
 					<input onChange={setTags} className='recipe-input' type="text" name='tags' id='tags' placeholder='Тэги' />
-				</fieldset>
+				</div>
 				<button type='button' onClick={pushRecipe}>Push</button>
 			</form>
-		</>
+		</div>
 	);
 };
 

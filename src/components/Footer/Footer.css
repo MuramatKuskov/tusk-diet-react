@@ -1,5 +1,5 @@
 .footer {
-	padding: 50px 50px;
+	padding: 1em 1.4em;
 	background-color: #212121;
 	background-color: var(--tg-theme-secondary-bg-color);
 }

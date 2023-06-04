@@ -1,0 +1,8 @@
+input {
+	width: 80%;
+	height: 2.5em;
+	padding: 0 1em;
+	border-color: var(--border-color);
+	border-radius: 50px;
+	background-color: var(--tg-theme-bg-color);
+}
