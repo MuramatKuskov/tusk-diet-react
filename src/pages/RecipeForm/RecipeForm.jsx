@@ -29,7 +29,7 @@ const RecipeForm = () => {
 			const data = new TextDecoder().decode(value);
 			console.log(data);
 		}); */
-		fetch('/pushRecipe', {
+		fetch(`${backURL}/pushRecipe`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
