@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
-require('dotenv').config();
+
 const backURL = process.env.backURL;
 
 const RecipeForm = () => {
