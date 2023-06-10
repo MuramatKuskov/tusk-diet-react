@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
 
-const backURL = process.env.REACT_APP_backURL;
-console.log(backURL);
+const backURL = REACT_APP_backURL;
+
 const RecipeForm = () => {
 	const [recipe, setRecipe] = useState({
 		// дописать логику добавления картинок
