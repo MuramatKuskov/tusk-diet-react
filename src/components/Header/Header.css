@@ -64,14 +64,14 @@
 	width: 2em;
 	height: 0.3em;
 	background-color: aliceblue;
-}
 
-.sidebar-close-line:first-of-type {
-	transform: rotateZ(-45deg);
-}
+	&:first-of-type {
+		transform: rotateZ(-45deg);
+	}
 
-.sidebar-close-line:last-of-type {
-	transform: rotateZ(45deg);
+	&:last-of-type {
+		transform: rotateZ(45deg);
+	}
 }
 
 .sidebar-link {

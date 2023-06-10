@@ -1,10 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
-const backURL = 'https://ec2-13-53-243-222.eu-north-1.compute.amazonaws.com';
+require('dotenv').config();
+const backURL = process.env.backURL;
 
 const RecipeForm = () => {
 	const [recipe, setRecipe] = useState({
+		// дописать логику добавления картинок
+		img: "",
 		title: "",
 		ingredients: "",
 		process: "",
@@ -14,7 +17,7 @@ const RecipeForm = () => {
 	const { tg, queryId } = useTelegram();
 
 	const pushRecipe = useCallback(async () => {
-		fetch('https://13.53.243.222/smth').then(resp => {
+		/* fetch('localhost:8080/pushRecipe').then(resp => {
 			console.log(resp);
 			const reader = resp.body.getReader();
 			return reader.read();
@@ -25,8 +28,8 @@ const RecipeForm = () => {
 			}
 			const data = new TextDecoder().decode(value);
 			console.log(data);
-		});
-		/* fetch('http://13.53.243.222/pushRecipe', {
+		}); */
+		fetch('/pushRecipe', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -43,7 +46,7 @@ const RecipeForm = () => {
 				}
 				const data = new TextDecoder().decode(value);
 				console.log(data);
-			}); */
+			});
 	}, []);
 
 	useEffect(() => {
