@@ -17,7 +17,6 @@ const RecipeForm = () => {
 	const { tg, queryId } = useTelegram();
 
 	const pushRecipe = useCallback(async () => {
-		console.log(backURL);
 		/* fetch('localhost:8080/pushRecipe').then(resp => {
 			console.log(resp);
 			const reader = resp.body.getReader();
