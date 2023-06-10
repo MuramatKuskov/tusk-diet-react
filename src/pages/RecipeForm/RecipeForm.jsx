@@ -3,7 +3,6 @@ import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
 
 const backURL = process.env.REACT_APP_backURL;
-console.log(backURL);
 
 const RecipeForm = () => {
 	const [recipe, setRecipe] = useState({
@@ -18,6 +17,7 @@ const RecipeForm = () => {
 	const { tg, queryId } = useTelegram();
 
 	const pushRecipe = useCallback(async () => {
+		console.log(backURL);
 		/* fetch('localhost:8080/pushRecipe').then(resp => {
 			console.log(resp);
 			const reader = resp.body.getReader();
