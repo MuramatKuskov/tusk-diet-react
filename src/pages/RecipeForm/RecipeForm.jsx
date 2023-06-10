@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
 
-const backURL = REACT_APP_backURL;
+const backURL = process.env.REACT_APP_backURL;
 
 const RecipeForm = () => {
 	const [recipe, setRecipe] = useState({
