@@ -1,0 +1,29 @@
+.loader {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	border: 5px dotted var(--tg-theme-button-color);
+	animation: rotate 3s infinite linear;
+}
+
+.loader-wrapper {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(124, 124, 124, 0.568);
+}
+
+@keyframes rotate {
+	from {
+		transform: rotate(0deg)
+	}
+
+	to {
+		transform: rotate(360deg)
+	}
+}

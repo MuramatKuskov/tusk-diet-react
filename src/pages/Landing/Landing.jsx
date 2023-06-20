@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Landing.css';
 import Index from '../Index/Index';
+import { PageNavContext } from '../../context';
 
 const Landing = (props) => {
+	const { currentPage, setCurrentPage } = useContext(PageNavContext);
+
 	function handleClick() {
-		props.setCurrentPage(<Index />);
+		setCurrentPage(<Index />);
 	}
 
 	return (

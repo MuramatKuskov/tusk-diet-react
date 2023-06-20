@@ -11,8 +11,11 @@
 }
 
 .recipe-label {
-	margin: 0 5em 1em;
+	display: flex;
+	align-items: center;
+	margin: 0 1em 1em;
 	font-size: 1.1em;
+	width: 80%;
 }
 
 .recipe-input {
@@ -21,10 +24,78 @@
 	width: 80%;
 	border: 1px solid;
 	border-radius: 0.7em;
-	outline: none;
 	background-color: var(--tg-theme-bg-color);
+
+	&.recipe-input-inline {
+		width: 5em;
+	}
 }
 
 .recipe-input::placeholder {
 	color: var(--secondary-text-color);
+}
+
+.recipe-dropdown {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	height: 3em;
+	padding: 0;
+	list-style: none;
+	transition: 500ms;
+
+	& > .recipe-type {
+		pointer-events: none;
+	}
+
+	&.dropdown-open {
+		height: 30vh;
+		overflow: scroll;
+		scrollbar-width: none;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		& > .recipe-type {
+			pointer-events: all;
+			position: relative;
+			z-index: 9;
+		}
+
+		&::after {
+			content: "";
+			display: block;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+		}
+	}
+}
+
+.recipe-type {
+	width: 100%;
+	text-align: center;
+	transition: 1s;
+	padding: 1em;
+
+	&.selected {
+		order: -1;
+
+		&::before {
+			content: "✓";
+			display: inline-block;
+			width: 25px;
+			margin-left: -25px;
+			line-height: 1;
+			overflow: visible;
+			color: green;
+		}
+	}
+
+	&:hover {
+		background-color: cornflowerblue;
+	}
 }

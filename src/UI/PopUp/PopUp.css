@@ -1,0 +1,29 @@
+.popup-wrapper {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(124, 124, 124, 0.568);
+}
+
+.popup-body {
+	padding: 1em;
+	background-color: var(--tg-theme-bg-color);
+	background-color: darkslategrey;
+	border-radius: 15px;
+	transition: 300ms;
+
+	/* линтер пока ругается, но вложенность работает */
+	&:hover {
+		transform: scale(1.1);
+	}
+}
+
+.popup-text {
+	color: var(--tg-theme-text-color);
+	color: azure;
+}

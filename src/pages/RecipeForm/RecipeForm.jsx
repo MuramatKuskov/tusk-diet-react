@@ -1,53 +1,45 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
+import { useFetching } from '../../hooks/useFetching';
+import Loader from '../../UI/Loader/Loader';
+import PopUp from '../../UI/PopUp/PopUp';
 
 const backURL = process.env.REACT_APP_backURL;
 
 const RecipeForm = () => {
-	const [recipe, setRecipe] = useState({
-		// дописать логику добавления картинок
-		img: "",
-		title: "",
-		ingredients: "",
-		process: "",
-		link: "",
-		tags: ""
-	});
+	// Работает только из Телеграма
 	const { tg, queryId } = useTelegram();
 
-	const pushRecipe = useCallback(async () => {
-		/* fetch('localhost:8080/pushRecipe').then(resp => {
-			console.log(resp);
-			const reader = resp.body.getReader();
-			return reader.read();
-		}).then(({ done, value }) => {
-			if (done) {
-				console.log('gg');
-				return;
-			}
-			const data = new TextDecoder().decode(value);
-			console.log(data);
-		}); */
-		fetch(`${backURL}/pushRecipe`, {
+	const [recipe, setRecipe] = useState({
+		// дописать логику добавления картинок
+		img: "#",
+		title: "",
+		type: [],
+		ingredients: [],
+		cook: "",
+		time: 0,
+		link: "",
+		tags: "",
+		author: window.Telegram?.WebAppUser || tg?.WebAppUser || null,
+		moderating: true
+	});
+	console.log(window.Telegram.WebAppUser, tg.WebAppUser);
+
+	const [pushResult, setPushResult] = useState('');
+
+	const [pushRecipe, isPushingRecipe, pushingError, setPushingError] = useFetching(async () => {
+		await fetch(`http://localhost:8080/pushRecipe`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ queryId, recipe })
+			body: JSON.stringify({ queryId, recipe }) // queryID работает только из Телеграма
 		})
-			.then(resp => {
-				const reader = resp.body.getReader();
-				return reader.read();
-			}).then(({ done, value }) => {
-				if (done) {
-					console.log('gg');
-					return;
-				}
-				const data = new TextDecoder().decode(value);
-				console.log(data);
+			.then(res => {
+				setPushResult(res.statusText);
 			});
-	}, []);
+	});
 
 	useEffect(() => {
 		tg.onEvent('mainButtonClicked', pushRecipe)
@@ -59,14 +51,14 @@ const RecipeForm = () => {
 	useEffect(() => {
 		if (recipe.title.length > 3
 			&& recipe.ingredients.length > 0
-			&& recipe.process.length > 3
+			&& recipe.cook.length > 3
 		) {
 			tg.MainButton.show();
 			tg.MainButton.setParams({
 				text: 'Добавить рецепт'
 			})
 		}
-	}, [recipe.title, recipe.ingredients, recipe.process])
+	}, [recipe.title, recipe.ingredients, recipe.cook])
 
 	const setTitle = (e) => {
 		setRecipe(prev => ({
@@ -75,17 +67,35 @@ const RecipeForm = () => {
 		}));
 	}
 
-	const setIngredients = (e) => {
+	const setType = e => {
+		e.target.classList.toggle("selected");
 		setRecipe(prev => ({
 			...prev,
-			ingredients: e.target.value
+			type: prev.type.includes(e.target.attributes.value.nodeValue)
+				? [...prev.type].filter(el => el != e.target.attributes.value.nodeValue)
+				: [...prev.type, e.target.attributes.value.nodeValue]
 		}));
 	}
 
-	const setProcess = (e) => {
+	const setIngredients = e => {
+		console.log(e.taget);
 		setRecipe(prev => ({
 			...prev,
-			process: e.target.value
+			ingredients: e.target.value.split(',')
+		}));
+	}
+
+	const setCook = (e) => {
+		setRecipe(prev => ({
+			...prev,
+			cook: e.target.value
+		}));
+	}
+
+	const setTime = e => {
+		setRecipe(prev => ({
+			...prev,
+			time: e.target.value
 		}));
 	}
 
@@ -103,21 +113,56 @@ const RecipeForm = () => {
 		}));
 	}
 
+	const setImage = e => {
+		setRecipe(prev => ({
+			...prev,
+			img: e.target.value
+		}))
+	}
+
+	const dropDownToggle = e => {
+		e.target.classList.toggle("dropdown-open");
+	}
+
 	return (
 		<div className='page'>
 			<h2 className='title'>Добавить рецепт</h2>
 			<form className='recipe-form'>
 				<div className='recipe-field'>
-					<label className='recipe-label' htmlFor="title">Название блюда</label>
+					<label className='recipe-label' htmlFor="title">Название</label>
 					<input onChange={setTitle} className='recipe-input' type="text" name='title' id='title' placeholder='Название' />
+				</div>
+				<div className="recipe-field">
+					<label className="recipe-label">Тип блюда</label>
+					<ul onClick={dropDownToggle} className="recipe-dropdown recipe-input">
+						<li onClick={setType} className="recipe-type" value='breakfast'>Завтрак</li>
+						<li onClick={setType} className="recipe-type" value='main'>Основное</li>
+						<li onClick={setType} className="recipe-type" value='garnish'>Гарнир</li>
+						<li onClick={setType} className="recipe-type" value='soup'>Суп</li>
+						<li onClick={setType} className="recipe-type" value='snack'>Закуска</li>
+						<li onClick={setType} className="recipe-type" value='salad'>Салат</li>
+						<li onClick={setType} className="recipe-type" value='bakery'>Выпечка</li>
+						<li onClick={setType} className="recipe-type" value='dessert'>Десерт</li>
+						<li onClick={setType} className="recipe-type" value='drink'>Напиток</li>
+						<li onClick={setType} className="recipe-type" value='sauce'>Соус</li>
+						<li onClick={setType} className="recipe-type" value='other'>Другое</li>
+					</ul>
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="ingredients">Ингредиенты</label>
-					<input onChange={setIngredients} className='recipe-input' type="text" name='ingredients' id='ingredients' placeholder='Ингредиенты' />
+					<textarea onChange={setIngredients} className='recipe-input' name='ingredients' id='ingredients' placeholder='Ингредиенты'></textarea>
 				</div>
 				<div className='recipe-field'>
-					<label className='recipe-label' htmlFor="process">Приготовление</label>
-					<textarea onChange={setProcess} className='recipe-input' name='process' id='process' placeholder='Приготовление' rows="6"></textarea>
+					<label className='recipe-label' htmlFor="cook">Приготовление</label>
+					<textarea onChange={setCook} className='recipe-input' name='cook' id='cook' placeholder='Приготовление' rows="6"></textarea>
+				</div>
+				<div className='recipe-field'>
+					<label className='recipe-label' htmlFor="time">
+						Время приготовления:
+						<input type='number' className='recipe-input recipe-input-inline' value={recipe.time} onChange={setTime} />
+						минут(ы)
+					</label>
+					<input type='range' onChange={setTime} className='recipe-input' name='time' min="10" max="120" value={recipe.time} />
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="link">Link</label>
@@ -127,8 +172,15 @@ const RecipeForm = () => {
 					<label className='recipe-label' htmlFor="tags">Тэги</label>
 					<input onChange={setTags} className='recipe-input' type="text" name='tags' id='tags' placeholder='Тэги' />
 				</div>
+				<div className='recipe-field'>
+					<label className='recipe-label' htmlFor="img">Прикрепить изображение</label>
+					<input onChange={setImage} className='recipe-input' type="file" name='img' id='img' />
+				</div>
 				<button type='button' onClick={pushRecipe}>Push</button>
 			</form>
+			{pushResult && <PopUp text={pushResult} callback={() => { setPushResult('') }} />}
+			{pushingError && <PopUp text={pushingError} callback={() => { setPushingError('') }} />}
+			{isPushingRecipe && <Loader />}
 		</div>
 	);
 };

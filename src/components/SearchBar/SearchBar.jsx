@@ -13,7 +13,7 @@ const SearcBar = (props) => {
 	}
 
 	return (
-		<input type="search" name="src" id="src" onInput={handleInput} placeholder='Найти рецепт...' />
+		<input className='searchbar' type="search" name="src" id="src" onInput={handleInput} placeholder='Найти рецепт...' />
 	);
 };
 

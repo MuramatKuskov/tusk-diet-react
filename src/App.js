@@ -4,14 +4,16 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Landing from './pages/Landing/Landing';
 import './App.css';
+import { PageNavContext } from './context';
 
 
 function App() {
   const { tg } = useTelegram();
   const [currentPage, setCurrentPage] = useState();
 
+  // выбор страницы для первой загрузки, пока без выбора)
   useEffect(() => {
-    setCurrentPage(<Landing setCurrentPage={setCurrentPage} />)
+    setCurrentPage(<Landing />)
   }, [])
 
   useEffect(() => {
@@ -19,11 +21,16 @@ function App() {
   }, []);
 
   return (
-    <div className='app'>
-      <Header setCurrentPage={setCurrentPage} />
-      {currentPage}
-      <Footer />
-    </div>
+    <PageNavContext.Provider value={{
+      currentPage,
+      setCurrentPage
+    }}>
+      <div className='app'>
+        <Header />
+        {currentPage}
+        <Footer />
+      </div>
+    </PageNavContext.Provider>
   );
 }
 

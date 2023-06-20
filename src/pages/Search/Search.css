@@ -1,0 +1,20 @@
+.recipes {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	row-gap: 2em;
+}
+
+.recipe {
+	flex-basis: 45%;
+	width: min-content;
+	border: 1px solid;
+	text-align: center;
+	transition: 500ms;
+
+	&:hover {
+		cursor: pointer;
+		transform: scale(1.1);
+	}
+}

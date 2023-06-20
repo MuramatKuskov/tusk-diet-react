@@ -30,7 +30,7 @@
 .burger-line {
 	width: 2em;
 	height: 0.3em;
-	background-color: #212121;
+	background-color: var(--secondary-text-color);
 }
 
 .sidebar {
@@ -44,12 +44,14 @@
 	transition: 1s;
 	background-color: var(--tg-theme-bg-color);
 	background-color: #212121;
+	z-index: 9;
 }
 
 .sidebar-active {
 	transform: translate(100%);
 }
 
+/* позиционирование элемента настроить */
 .sidebar-close {
 	width: 2em;
 	height: 2em;
@@ -85,5 +87,4 @@
 .sidebar-link:hover {
 	cursor: pointer;
 	background-color: var(--primary-color);
-	background-color: blue;
 }

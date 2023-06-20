@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './Header.css';
 import RecipeForm from '../../pages/RecipeForm/RecipeForm';
 import Landing from '../../pages/Landing/Landing';
 import Index from '../../pages/Index/Index';
 import Search from '../../pages/Search/Search';
 import ShoppingList from '../../pages/ShoppingList/ShoppingList';
+import { PageNavContext } from '../../context';
 
-const Header = (props) => {
+const Header = () => {
 	const [sideBarStatus, setSideBarStatus] = useState(false);
+	const { currentPage, setCurrentPage } = useContext(PageNavContext);
 
 	function toggleSideBar() {
 		setSideBarStatus(sideBarStatus => sideBarStatus = !sideBarStatus);
@@ -16,19 +18,19 @@ const Header = (props) => {
 	function handleNav(e) {
 		switch (e.target.value) {
 			case 0:
-				props.setCurrentPage(<Index />);
+				setCurrentPage(<Index />);
 				break;
 			case 1:
-				props.setCurrentPage(<Search />);
+				setCurrentPage(<Search query="" />);
 				break;
 			case 2:
-				props.setCurrentPage(<RecipeForm />);
+				setCurrentPage(<RecipeForm />);
 				break;
 			case 3:
-				props.setCurrentPage(<ShoppingList />);
+				setCurrentPage(<ShoppingList />);
 				break;
 			case 4:
-				props.setCurrentPage(<Landing />);
+				setCurrentPage(<Landing />);
 				break;
 		}
 		toggleSideBar();
