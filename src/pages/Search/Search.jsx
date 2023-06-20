@@ -57,7 +57,7 @@ const Search = (props) => {
 				</select>
 			</div>
 			<div className='recipes'>
-				{recipes.length ? recipes.map((recipe, i) => (
+				{recipes?.length ? recipes.map((recipe, i) => (
 					<div key={i} className='recipe'>
 						<img className='recipe-img' src={recipe.img} alt='изображение' loading='lazy' />
 						<p className="recipe-title">{recipe.title}</p>

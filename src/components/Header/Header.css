@@ -30,7 +30,7 @@
 .burger-line {
 	width: 2em;
 	height: 0.3em;
-	background-color: var(--secondary-text-color);
+	background-color: var(--tg-theme-hint-color);
 }
 
 .sidebar {
