@@ -6,7 +6,7 @@
 	row-gap: 2em;
 }
 
-.recipe {
+.recipe-item {
 	flex-basis: 45%;
 	width: min-content;
 	border: 1px solid;

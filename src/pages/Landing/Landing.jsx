@@ -11,7 +11,7 @@ const Landing = (props) => {
 	}
 
 	return (
-		<div className='page landing'>
+		<div className='page page-landing'>
 			<article className="intro">
 				<h2 className="greeting">Добро пожаловать в "Рацион Бивня", бродяга!</h2>
 				<p className="description">Тут мы встречаемся с рецептами, как братья на

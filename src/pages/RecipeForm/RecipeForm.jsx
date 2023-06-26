@@ -24,7 +24,12 @@ const RecipeForm = () => {
 		author: window.Telegram?.WebAppUser || tg?.WebAppUser || null,
 		moderating: true
 	});
-	console.log(window.Telegram.WebAppUser, tg.WebAppUser);
+	// undefined, undefined даже с тг
+	console.table("window.Telegram.WebAppUser: " + window.Telegram.WebAppUser,
+		"tg.WebAppUser: " + tg.WebAppUser,
+		"tg: " + tg,
+		"window.Telegram: " + window.Telegram
+	);
 
 	const [pushResult, setPushResult] = useState('');
 
@@ -78,7 +83,6 @@ const RecipeForm = () => {
 	}
 
 	const setIngredients = e => {
-		console.log(e.taget);
 		setRecipe(prev => ({
 			...prev,
 			ingredients: e.target.value.split(',')
@@ -125,7 +129,7 @@ const RecipeForm = () => {
 	}
 
 	return (
-		<div className='page'>
+		<div className='page page-form'>
 			<h2 className='title'>Добавить рецепт</h2>
 			<form className='recipe-form'>
 				<div className='recipe-field'>

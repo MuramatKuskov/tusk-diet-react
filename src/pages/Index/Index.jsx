@@ -12,7 +12,7 @@ const Index = (props) => {
 	}, []);
 
 	return (
-		<div className='page main'>
+		<div className='page page-main'>
 			<SearchBar />
 			<Tiles setCurrentPage={props.setCurrentPage} />
 		</div>

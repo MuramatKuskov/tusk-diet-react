@@ -7,7 +7,7 @@ const Tiles = () => {
 	const { currentPage, setCurrentPage } = useContext(PageNavContext);
 
 	const handleClick = e => {
-		setCurrentPage(<Search query={`type=${e.target.getAttribute('data')}`} />)
+		setCurrentPage(<Search query={{ type: e.target.getAttribute('data') }} />)
 	}
 
 	return (

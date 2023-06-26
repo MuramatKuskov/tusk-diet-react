@@ -1,0 +1,34 @@
+.recipe {
+	margin-top: 3em;
+	color: var(--tg-theme-text-color);
+}
+
+.recipe-title {
+	text-align: center;
+}
+
+.recipe-img {
+	margin: 2em 0;
+}
+
+.recipe-info {
+	display: flex;
+	justify-content: space-around;
+	max-width: 1200px;
+	margin: 0 auto;
+	background-color: rgba(169, 169, 169, 0.171);
+}
+
+.recipe-info-item {}
+
+.recipe-subtitle {
+	margin: 2em 0 0.5em;
+}
+
+.recipe-ingredients {}
+
+.recipe-ingredient {}
+
+.recipe-cook {}
+
+.recipe-link {}
