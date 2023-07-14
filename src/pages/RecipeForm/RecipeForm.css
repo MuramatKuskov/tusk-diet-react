@@ -48,7 +48,7 @@
 		pointer-events: none;
 	}
 
-	&.dropdown-open {
+	&:hover {
 		height: 30vh;
 		overflow: scroll;
 		scrollbar-width: none;
@@ -58,12 +58,23 @@
 		}
 
 		& > .recipe-type {
+			height: initial;
+			padding: 1em;
 			pointer-events: all;
 			position: relative;
 			z-index: 9;
 		}
+	}
 
-		&::after {
+	&:not(:hover):has(.selected) {
+		height: fit-content;
+
+		& .recipe-type:not(.selected) {
+			display: none;
+		}
+	}
+
+	/* &::after {
 			content: "";
 			display: block;
 			position: fixed;
@@ -71,8 +82,7 @@
 			left: 0;
 			width: 100vw;
 			height: 100vh;
-		}
-	}
+		} */
 }
 
 .recipe-type {

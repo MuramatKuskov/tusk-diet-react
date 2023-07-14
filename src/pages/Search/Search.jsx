@@ -5,6 +5,7 @@ import Loader from '../../UI/Loader/Loader';
 import PopUp from '../../UI/PopUp/PopUp';
 import { PageNavContext } from '../../context';
 import Recipe from '../Recipe/Recipe';
+import SearchBar from '../../components/SearchBar/SearchBar';
 
 const Search = (props) => {
 	const [recipes, setRecipes] = useState([]);
@@ -30,12 +31,26 @@ const Search = (props) => {
 		async function startFetching(query) {
 			if (ignore) return;
 			const data = await fetchRecipes(query);
-			setRecipes(data);
+			if (typeof data === 'object') return setRecipes(data);
+			console.log('Server response (need recipes arr): %s', data);
 		}
 		startFetching(query);
 
 		return () => ignore = true;
 	}, []);
+
+	const setTitle = e => {
+		setQuery(prev => {
+			if (!e) {
+				const { title, ...rest } = prev;
+				return rest;
+			}
+			return {
+				...prev,
+				title: e
+			}
+		});
+	}
 
 	const setType = e => {
 		setQuery(prev => ({
@@ -44,28 +59,30 @@ const Search = (props) => {
 		}));
 	}
 
-	const setTitle = e => {
+	const setIngredients = e => {
 		setQuery(prev => {
 			if (!e.target.value) {
-				const { title, ...rest } = prev;
+				const { ingredients, ...rest } = prev;
 				return rest;
 			}
 			return {
 				...prev,
-				title: e.target.value
+				ingredients: e.target.value.split(',')
 			}
-		});
+		})
 	}
 
 	const appendFilters = async () => {
 		const data = await fetchRecipes(query);
-		setRecipes(data);
+		if (typeof data === 'object') return setRecipes(data);
+		console.log('Server response (need recipes arr): %s', data);
 	}
 
 	return (
 		<div className='page page-search'>
 			<div className="filters">
-				<input onChange={setTitle} type="text" name="title" id="title" placeholder='Название' />
+				<SearchBar setTitle={setTitle} />
+				<input onChange={setIngredients} type="text" name="ingredients" id="ingredients" placeholder='Ингредиенты' />
 				<select onChange={setType} name="type" id="type-select" value={query.type}>
 					<option value="breakfast">Завтраки</option>
 					<option value="main">Основные блюда</option>
@@ -83,7 +100,7 @@ const Search = (props) => {
 			</div>
 			<div className='recipes'>
 				{recipes?.length ? recipes.map((recipe, i) => (
-					<div onClick={e => { setCurrentPage(<Recipe recipe={recipes[i]} />) }} key={i} className='recipe-item'>
+					<div onClick={() => { setCurrentPage(<Recipe recipe={recipes[i]} />) }} key={i} className='recipe-item'>
 						<img className='recipe-item-img' src={recipe.img} alt='изображение' loading='lazy' />
 						<p className="recipe-item-title">{recipe.title}</p>
 					</div>

@@ -11,7 +11,7 @@ const RecipeForm = () => {
 	// Работает только из Телеграма
 	const { tg, queryId } = useTelegram();
 
-	const [recipe, setRecipe] = useState({
+	const recipeSchema = {
 		// дописать логику добавления картинок
 		img: "#",
 		title: "",
@@ -21,15 +21,13 @@ const RecipeForm = () => {
 		time: 0,
 		link: "",
 		tags: "",
-		author: window.Telegram?.WebAppUser || tg?.WebAppUser || null,
+		author: tg.initDataUnsafe?.WebAppUser || null,
 		moderating: true
-	});
+	}
+
+	const [recipe, setRecipe] = useState(recipeSchema);
 	// undefined, undefined даже с тг
-	console.table("window.Telegram.WebAppUser: " + window.Telegram.WebAppUser,
-		"tg.WebAppUser: " + tg.WebAppUser,
-		"tg: " + tg,
-		"window.Telegram: " + window.Telegram
-	);
+	console.log(tg.initDataUnsafe?.WebAppUser);
 
 	const [pushResult, setPushResult] = useState('');
 
@@ -42,7 +40,7 @@ const RecipeForm = () => {
 			body: JSON.stringify({ queryId, recipe }) // queryID работает только из Телеграма
 		})
 			.then(res => {
-				setPushResult(res.statusText);
+				handleResponse(res);
 			});
 	});
 
@@ -73,7 +71,6 @@ const RecipeForm = () => {
 	}
 
 	const setType = e => {
-		e.target.classList.toggle("selected");
 		setRecipe(prev => ({
 			...prev,
 			type: prev.type.includes(e.target.attributes.value.nodeValue)
@@ -85,7 +82,7 @@ const RecipeForm = () => {
 	const setIngredients = e => {
 		setRecipe(prev => ({
 			...prev,
-			ingredients: e.target.value.split(',')
+			ingredients: e.target.value.split(',').map(el => el.trim())
 		}));
 	}
 
@@ -124,8 +121,19 @@ const RecipeForm = () => {
 		}))
 	}
 
-	const dropDownToggle = e => {
-		e.target.classList.toggle("dropdown-open");
+	const handleSelect = e => {
+		e.target.classList.toggle("selected");
+		setType(e);
+	}
+
+	const handleResponse = res => {
+		setPushResult(res.statusText);
+		res.statusText === 'OK' && clearInputs();
+	}
+
+	const clearInputs = () => {
+		setRecipe(recipeSchema);
+		document.querySelectorAll(".selected").forEach(el => el.classList.remove('selected'))
 	}
 
 	return (
@@ -134,31 +142,31 @@ const RecipeForm = () => {
 			<form className='recipe-form'>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="title">Название</label>
-					<input onChange={setTitle} className='recipe-input' type="text" name='title' id='title' placeholder='Название' />
+					<input onChange={setTitle} className='recipe-input' type="text" name='title' id='title' placeholder='Название' value={recipe.title} />
 				</div>
 				<div className="recipe-field">
 					<label className="recipe-label">Тип блюда</label>
-					<ul onClick={dropDownToggle} className="recipe-dropdown recipe-input">
-						<li onClick={setType} className="recipe-type" value='breakfast'>Завтрак</li>
-						<li onClick={setType} className="recipe-type" value='main'>Основное</li>
-						<li onClick={setType} className="recipe-type" value='garnish'>Гарнир</li>
-						<li onClick={setType} className="recipe-type" value='soup'>Суп</li>
-						<li onClick={setType} className="recipe-type" value='snack'>Закуска</li>
-						<li onClick={setType} className="recipe-type" value='salad'>Салат</li>
-						<li onClick={setType} className="recipe-type" value='bakery'>Выпечка</li>
-						<li onClick={setType} className="recipe-type" value='dessert'>Десерт</li>
-						<li onClick={setType} className="recipe-type" value='drink'>Напиток</li>
-						<li onClick={setType} className="recipe-type" value='sauce'>Соус</li>
-						<li onClick={setType} className="recipe-type" value='other'>Другое</li>
+					<ul className="recipe-dropdown recipe-input">
+						<li onClick={handleSelect} className="recipe-type" value='breakfast'>Завтрак</li>
+						<li onClick={handleSelect} className="recipe-type" value='main'>Основное</li>
+						<li onClick={handleSelect} className="recipe-type" value='garnish'>Гарнир</li>
+						<li onClick={handleSelect} className="recipe-type" value='soup'>Суп</li>
+						<li onClick={handleSelect} className="recipe-type" value='snack'>Закуска</li>
+						<li onClick={handleSelect} className="recipe-type" value='salad'>Салат</li>
+						<li onClick={handleSelect} className="recipe-type" value='bakery'>Выпечка</li>
+						<li onClick={handleSelect} className="recipe-type" value='dessert'>Десерт</li>
+						<li onClick={handleSelect} className="recipe-type" value='drink'>Напиток</li>
+						<li onClick={handleSelect} className="recipe-type" value='sauce'>Соус</li>
+						<li onClick={handleSelect} className="recipe-type" value='other'>Другое</li>
 					</ul>
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="ingredients">Ингредиенты</label>
-					<textarea onChange={setIngredients} className='recipe-input' name='ingredients' id='ingredients' placeholder='Ингредиенты'></textarea>
+					<textarea onChange={setIngredients} className='recipe-input' name='ingredients' id='ingredients' placeholder='Ингредиенты' value={recipe.value}></textarea>
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="cook">Приготовление</label>
-					<textarea onChange={setCook} className='recipe-input' name='cook' id='cook' placeholder='Приготовление' rows="6"></textarea>
+					<textarea onChange={setCook} className='recipe-input' name='cook' id='cook' placeholder='Приготовление' rows="6" value={recipe.cook}></textarea>
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="time">
@@ -170,15 +178,15 @@ const RecipeForm = () => {
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="link">Link</label>
-					<input onChange={setLink} className='recipe-input' type="url" name='ingredients' id='link' placeholder='Link' />
+					<input onChange={setLink} className='recipe-input' type="url" name='ingredients' id='link' placeholder='Link' value={recipe.link} />
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="tags">Тэги</label>
-					<input onChange={setTags} className='recipe-input' type="text" name='tags' id='tags' placeholder='Тэги' />
+					<input onChange={setTags} className='recipe-input' type="text" name='tags' id='tags' placeholder='Тэги' value={recipe.tags} />
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="img">Прикрепить изображение</label>
-					<input onChange={setImage} className='recipe-input' type="file" name='img' id='img' />
+					<input onChange={setImage} className='recipe-input' type="file" name='img' id='img' value='' />
 				</div>
 				<button type='button' onClick={pushRecipe}>Push</button>
 			</form>

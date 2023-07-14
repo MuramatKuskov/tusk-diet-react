@@ -3,7 +3,6 @@ import './Recipe.css';
 
 const Recipe = (props) => {
 	const { recipe } = props;
-	console.log(recipe.ingredients);
 
 	return (
 		<div className='page page-recipe'>
@@ -20,7 +19,9 @@ const Recipe = (props) => {
 					{recipe.ingredients.map((el, i) => <li className="recipe-ingredient" key={i}>{el}</li>)}
 				</ul>
 				<h3 className="recipe-subtitle">Приготовление:</h3>
-				<p className="recipe-cook">{recipe.cook}</p>
+				{recipe.cook.split('\n').map((el, i) => {
+					return <p className='recipe-cook' key={i}>{el}</p>
+				})}
 				{recipe.link &&
 					<div className='recipe-link'>
 						<h3 className="recipe-subtitle">Ссылка на рецепт:</h3>
