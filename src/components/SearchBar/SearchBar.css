@@ -44,7 +44,7 @@
 	display: none;
 }
 
-.searchbar.inFocus ~ .search-wrapper, .searchbar.inFocus ~ .hints {
+.searchbar.inFocus ~ .hints {
 	display: block;
 }
 
@@ -52,11 +52,6 @@
 	color: var(--tg-theme-hint-color);
 	list-style: none;
 	padding: 0.5em 5px;
-
-	&:last-of-type {
-		border-bottom-left-radius: 15px;
-		border-bottom-right-radius: 15px;
-	}
 
 	&:hover {
 		cursor: pointer;

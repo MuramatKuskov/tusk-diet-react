@@ -72,12 +72,13 @@ const SearchBar = (props) => {
 		setSearchQuery({ _id: target._id });
 	}
 
-	function focus(e) {
+	function toggleFocus(e) {
+		if (e.target.classList.contains('inFocus')) {
+			return setTimeout(() => {
+				e.target.classList.remove('inFocus');
+			}, 10);
+		}
 		e.target.classList.add('inFocus');
-	}
-
-	function unFocus() {
-		document.querySelector('.searchbar').classList.remove('inFocus');
 	}
 
 	function showHints() {
@@ -94,9 +95,8 @@ const SearchBar = (props) => {
 
 	return (
 		<>
-			<input className='searchbar' type="search" name="src" id="src" onInput={handleInput} onFocus={focus} placeholder='Найти рецепт...' />
+			<input className='searchbar' type="search" name="src" id="src" onInput={handleInput} onFocus={toggleFocus} onBlur={toggleFocus} placeholder='Найти рецепт...' />
 			{showHints()}
-			<div className='search-wrapper' onClick={unFocus}></div>
 		</>
 	);
 };
