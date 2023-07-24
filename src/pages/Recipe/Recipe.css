@@ -13,10 +13,11 @@
 
 .recipe-info {
 	display: flex;
+	position: relative;
 	justify-content: space-around;
 	max-width: 1200px;
 	margin: 0 auto;
-	background-color: rgba(169, 169, 169, 0.171);
+	background-color: #7e7e7e7e;
 }
 
 .recipe-info-item {}

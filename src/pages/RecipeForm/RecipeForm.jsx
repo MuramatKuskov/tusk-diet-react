@@ -27,7 +27,7 @@ const RecipeForm = () => {
 
 	const [recipe, setRecipe] = useState(recipeSchema);
 	// undefined, undefined даже с тг
-	console.log(tg.initDataUnsafe?.WebAppUser);
+	console.log(tg.initDataUnsafe, tg.initData);
 
 	const [pushResult, setPushResult] = useState('');
 
@@ -136,6 +136,12 @@ const RecipeForm = () => {
 		document.querySelectorAll(".selected").forEach(el => el.classList.remove('selected'))
 	}
 
+	const handleTouch = e => {
+		setTimeout(() => {
+			e.target.classList.toggle('touched');
+		}, 100);
+	}
+
 	return (
 		<div className='page page-form'>
 			<h2 className='title'>Добавить рецепт</h2>
@@ -146,7 +152,7 @@ const RecipeForm = () => {
 				</div>
 				<div className="recipe-field">
 					<label className="recipe-label">Тип блюда</label>
-					<ul className="recipe-dropdown recipe-input">
+					<ul className="recipe-dropdown recipe-input" onTouchStart={handleTouch} onBlur={handleTouch}>
 						<li onClick={handleSelect} className="recipe-type" value='breakfast'>Завтрак</li>
 						<li onClick={handleSelect} className="recipe-type" value='main'>Основное</li>
 						<li onClick={handleSelect} className="recipe-type" value='garnish'>Гарнир</li>
@@ -162,7 +168,7 @@ const RecipeForm = () => {
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="ingredients">Ингредиенты</label>
-					<textarea onChange={setIngredients} className='recipe-input' name='ingredients' id='ingredients' placeholder='Ингредиенты' value={recipe.value}></textarea>
+					<textarea onChange={setIngredients} className='recipe-input' name='ingredients' id='ingredients' placeholder='Ингредиенты' value={recipe.ingredients}></textarea>
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="cook">Приготовление</label>

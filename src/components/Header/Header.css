@@ -53,10 +53,11 @@
 
 /* позиционирование элемента настроить */
 .sidebar-close {
+	padding: 2em 0;
 	width: 2em;
 	height: 2em;
 	position: relative;
-	margin-left: 87%;
+	margin-left: 85%;
 	transition: 800ms ease-in-out;
 }
 
@@ -86,5 +87,5 @@
 
 .sidebar-link:hover {
 	cursor: pointer;
-	background-color: var(--primary-color);
+	background-color: var(--tg-theme-link-color);
 }

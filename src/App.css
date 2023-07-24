@@ -20,6 +20,16 @@ body::-webkit-scrollbar {
   height: 100%;
 }
 
+:not(.telegram) {
+  --tg-theme-bg-color: #212121;
+  --tg-theme-button-color: #8774e1;
+  --tg-theme-button-text-color: #ffffff;
+  --tg-theme-hint-color: #aaaaaa;
+  --tg-theme-link-color: #8774e1;
+  --tg-theme-secondary-bg-color: #181818;
+  --tg-theme-text-color: #ffffff;
+}
+
 .app {
   min-height: 100%;
   display: flex;
@@ -29,6 +39,6 @@ body::-webkit-scrollbar {
 
 .page {
   flex: 1 0 auto;
-  padding: 0 1.5em;
+  padding: 2em 1.5em;
   background-color: var(--tg-theme-bg-color);
 }

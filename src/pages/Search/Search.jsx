@@ -82,19 +82,19 @@ const Search = (props) => {
 		<div className='page page-search'>
 			<div className="filters">
 				<SearchBar setTitle={setTitle} />
-				<input onChange={setIngredients} type="text" name="ingredients" id="ingredients" placeholder='Ингредиенты' />
-				<select onChange={setType} name="type" id="type-select" value={query.type}>
-					<option value="breakfast">Завтраки</option>
-					<option value="main">Основные блюда</option>
-					<option value="garnish">Гарниры</option>
-					<option value="soup">Супы</option>
-					<option value="snack">Закуски</option>
-					<option value="salad">Салаты</option>
-					<option value="bakery">Выпечка</option>
-					<option value="dessert">Дессерты</option>
-					<option value="drink">Напитки</option>
-					<option value="sauce">Соусы</option>
-					<option value="other">Другое</option>
+				<input className='filters-input' onChange={setIngredients} type="text" name="ingredients" id="ingredients" placeholder='Ингредиенты' />
+				<select className='filters-input' onChange={setType} name="type" id="type-select" value={query.type}>
+					<option className='filters-option' value="breakfast">Завтраки</option>
+					<option className='filters-option' value="main">Основные блюда</option>
+					<option className='filters-option' value="garnish">Гарниры</option>
+					<option className='filters-option' value="soup">Супы</option>
+					<option className='filters-option' value="snack">Закуски</option>
+					<option className='filters-option' value="salad">Салаты</option>
+					<option className='filters-option' value="bakery">Выпечка</option>
+					<option className='filters-option' value="dessert">Дессерты</option>
+					<option className='filters-option' value="drink">Напитки</option>
+					<option className='filters-option' value="sauce">Соусы</option>
+					<option className='filters-option' value="other">Другое</option>
 				</select>
 				<button onClick={appendFilters} type='button' className="filters-submit">Применить</button>
 			</div>

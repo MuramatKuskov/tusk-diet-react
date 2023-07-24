@@ -1,3 +1,18 @@
+.filters {
+	display: flex;
+	flex-direction: column;
+
+	.searchbar, .hints {
+		margin: 0 auto;
+	}
+}
+
+.filters-input {
+	margin: 2em auto 0;
+}
+
+.filters-option {}
+
 .recipes {
 	margin-top: 2em;
 	display: flex;
@@ -8,14 +23,24 @@
 }
 
 .recipe-item {
+	display: flex;
+	flex-direction: column;
 	flex-basis: 45%;
 	width: min-content;
-	border: 1px solid;
+	padding: 5px;
+	border: 1px solid var(--tg-theme-hint-color);
 	text-align: center;
 	transition: 500ms;
+	height: 100px;
+	border-radius: 15px;
 
 	&:hover {
 		cursor: pointer;
 		transform: scale(1.1);
 	}
+}
+
+.recipe-item-img {
+	border-radius: 15px;
+	flex: 1 0 auto;
 }

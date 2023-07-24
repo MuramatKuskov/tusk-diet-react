@@ -72,23 +72,32 @@ const SearchBar = (props) => {
 		setSearchQuery({ _id: target._id });
 	}
 
+	function focus(e) {
+		e.target.classList.add('inFocus');
+	}
+
+	function unFocus() {
+		document.querySelector('.searchbar').classList.remove('inFocus');
+	}
+
 	function showHints() {
-		return (
-			<ul className="hints">
+		if (searchQuery?.title?.length > 1) {
+			return <ul className="hints">
 				{foundRecipes.length ?
 					foundRecipes.map((el, index) => {
 						return <li className="hints-item" key={index} id={el._id} onClick={handleClick}>{el.title}</li>
 					})
 					: <li className="hints-item">{'Ничего не найдено...'}</li>}
 			</ul>
-		)
+		}
 	}
 
 	return (
-		<div className="search">
-			<input className='searchbar' type="search" name="src" id="src" onInput={handleInput} placeholder='Найти рецепт...' />
-			{searchQuery?.title?.length >= 3 && showHints()}
-		</div>
+		<>
+			<input className='searchbar' type="search" name="src" id="src" onInput={handleInput} onFocus={focus} placeholder='Найти рецепт...' />
+			{showHints()}
+			<div className='search-wrapper' onClick={unFocus}></div>
+		</>
 	);
 };
 

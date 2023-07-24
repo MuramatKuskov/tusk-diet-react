@@ -5,15 +5,20 @@ import Footer from './components/Footer/Footer';
 import Landing from './pages/Landing/Landing';
 import './App.css';
 import { PageNavContext } from './context';
+import Index from './pages/Index/Index';
 
 
 function App() {
   const { tg } = useTelegram();
   const [currentPage, setCurrentPage] = useState();
 
-  // выбор страницы для первой загрузки, пока без выбора)
   useEffect(() => {
-    setCurrentPage(<Landing />)
+    if (localStorage.getItem('isFirstEntry') === 'true') {
+      setCurrentPage(<Landing />);
+      localStorage.setItem('isFirstEntry', 'false');
+    } else {
+      setCurrentPage(<Index />);
+    }
   }, [])
 
   useEffect(() => {
