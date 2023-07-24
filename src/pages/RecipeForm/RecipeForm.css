@@ -45,51 +45,20 @@
 	padding: 0;
 	list-style: none;
 	transition: 500ms;
-
-	& > .recipe-type {
-		pointer-events: none;
-	}
-
-	&:hover {
-		height: 30vh;
-		overflow: scroll;
-		scrollbar-width: none;
-
-		& > .recipe-type {
-			pointer-events: all;
-		}
-
-		&::-webkit-scrollbar {
-			display: none;
-		}
-	}
-
-	&:not(:hover):has(.selected) {
-		height: fit-content;
-
-		& .recipe-type:not(.selected) {
-			display: none;
-		}
-	}
 }
 
-.recipe-dropdown.touched {
+.recipe-dropdown:hover {
+	height: 30vh;
+	overflow: scroll;
+	scrollbar-width: none;
+}
 
-	&::after {
-		content: "";
-		display: block;
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-	}
+.recipe-dropdown:not(:hover):has(.selected) {
+	height: fit-content;
+}
 
-	.recipe-type {
-		pointer-events: all;
-		position: relative;
-		z-index: 9;
-	}
+.recipe-dropdown:not(:hover):has(.selected) .recipe-type:not(.selected) {
+	display: none;
 }
 
 .recipe-type {
@@ -98,22 +67,27 @@
 	transition: 1s;
 	padding: 1em;
 	transition: 1s;
+	pointer-events: none;
+}
 
-	&.selected {
-		order: -1;
+.recipe-dropdown:hover .recipe-type {
+	pointer-events: all;
+}
 
-		&::before {
-			content: "✓";
-			display: inline-block;
-			width: 25px;
-			margin-left: -25px;
-			line-height: 1;
-			overflow: visible;
-			color: green;
-		}
-	}
+.recipe-type:hover {
+	background-color: cornflowerblue;
+}
 
-	&:hover {
-		background-color: cornflowerblue;
-	}
+.recipe-type.selected {
+	order: -1;
+}
+
+.recipe-type.selected::before {
+	content: "✓";
+	display: inline-block;
+	width: 25px;
+	margin-left: -25px;
+	line-height: 1;
+	overflow: visible;
+	color: green;
 }
