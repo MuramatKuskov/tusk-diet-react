@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import './Tiles.css';
 import Search from '../../pages/Search/Search';
 import { PageNavContext } from '../../context';
+import 'swiper/css/bundle';
 
 const types = [
 	{ data: 'breakfast', label: 'Завтрак', src: 'https://images.pexels.com/photos/3850660/pexels-photo-3850660.jpeg', },
@@ -19,21 +20,76 @@ const types = [
 
 const Tiles = () => {
 	const { currentPage, setCurrentPage } = useContext(PageNavContext);
+	const swiperRef = useRef(null);
+
+	useEffect(() => {
+		const params = {
+			injectStyles: [`.swiper-horizontal {padding-bottom: 20px}`],
+			grid: {
+				rows: 2,
+				fill: 'row'
+			},
+			pagination: true,
+			breakpoints: {
+				320: {
+					slidesPerView: 2,
+					spaceBetween: 20
+				},
+				375: {
+					slidesPerView: 2,
+				},
+				425: {
+					slidesPerView: 2,
+					spaceBetween: 30,
+				},
+				769: {
+					slidesPerView: 3,
+					spaceBetween: 30,
+					grabCursor: true,
+				},
+				1024: {
+					slidesPerView: 4,
+					spaceBetween: 30,
+					grabCursor: true
+				}
+			}
+		};
+		Object.assign(swiperRef.current, params);
+		swiperRef.current.initialize();
+	}, [])
 
 	const handleClick = e => {
 		setCurrentPage(<Search query={{ type: e.target.getAttribute('data') }} />)
 	}
 
 	return (
-		<div className='tiles'>
-			{types.map((el, index) => {
-				return (<div onClick={handleClick} data={el.data} className="tiles-item" key={index}>
-					<p className="tiles-label">{el.label}</p>
-					<img className='tiles-img' src={el.src} alt={el.label} loading='lazy' />
-				</div>)
-			})}
+		<div className="tiles">
+			<swiper-container init="false" ref={swiperRef}>
+				{types.map((el, index) => {
+					return (
+						<swiper-slide>
+							<div onClick={handleClick} data={el.data} className="tiles-item" key={index}>
+								<p className="tiles-label">{el.label}</p>
+								<img className='tiles-img' src={el.src} alt={el.label} loading='lazy' />
+							</div>
+						</swiper-slide>
+					)
+				})}
+			</swiper-container>
 		</div>
 	);
 };
+
+/* <div className='tiles'>	// оболочка карусели
+				{types.map((el, index) => {
+					return (
+						// слайды
+						<div onClick={handleClick} data={el.data} className="tiles-item" key={index}>
+						<p className="tiles-label">{el.label}</p>
+						<img className='tiles-img' src={el.src} alt={el.label} loading='lazy' />
+					</div>
+					)
+				})}
+			</div> */
 
 export default Tiles;

@@ -1,16 +1,15 @@
 .tiles {
 	width: 100%;
-	max-height: 350px;
+	height: fit-content;
 	overflow: hidden;
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	gap: 1.5em;
 	margin: 2em 0 2em;
 	padding: 10px 0 10px;
 }
 
 .tiles-item {
+	padding: 10px 0 10px;
+	width: fit-content;
+	margin: auto;
 	position: relative;
 	transition: 500ms;
 
@@ -22,7 +21,7 @@
 
 .tiles-img {
 	pointer-events: none;
-	width: 150px;
+	width: 120px;
 	aspect-ratio: 1;
 	border-radius: 20px;
 	box-shadow: 2px 2px 5px black;
@@ -40,4 +39,35 @@
 	color: var(--tg-theme-text-color);
 	background-color: rgba(41, 41, 41, 0.48);
 	border-radius: 0 0 20px 20px;
+}
+
+@media (min-width: 425px) {
+	.tiles-img {
+		width: 150px;
+	}
+}
+
+@media (min-width: 481px) {
+	.tiles-img {
+		width: 35vw;
+		max-width: 200px;
+	}
+}
+
+@media (min-width: 640px) {
+	.tiles {
+		padding: 10px 10% 10px;
+	}
+}
+
+@media (min-width: 769px) {
+	.tiles-img {
+		width: 170px;
+	}
+}
+
+@media (min-width: 1440px) {
+	.tiles {
+		padding: 10px 20vw 10px;
+	}
 }

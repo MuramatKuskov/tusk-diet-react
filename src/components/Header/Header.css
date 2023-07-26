@@ -51,7 +51,6 @@
 	transform: translate(100%);
 }
 
-/* позиционирование элемента настроить */
 .sidebar-close {
 	padding: 2em 0;
 	width: 2em;
@@ -67,14 +66,14 @@
 	width: 2em;
 	height: 0.3em;
 	background-color: aliceblue;
+}
 
-	&:first-of-type {
-		transform: rotateZ(-45deg);
-	}
+.sidebar-close-line:first-of-type {
+	transform: rotateZ(-45deg);
+}
 
-	&:last-of-type {
-		transform: rotateZ(45deg);
-	}
+.sidebar-close-line:last-of-type {
+	transform: rotateZ(45deg);
 }
 
 .sidebar-link {
@@ -88,4 +87,10 @@
 .sidebar-link:hover {
 	cursor: pointer;
 	background-color: var(--tg-theme-link-color);
+}
+
+@media (min-width: 769px) {
+	.header {
+		padding: 1.5em 10%;
+	}
 }

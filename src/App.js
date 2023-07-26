@@ -6,11 +6,15 @@ import Landing from './pages/Landing/Landing';
 import './App.css';
 import { PageNavContext } from './context';
 import Index from './pages/Index/Index';
-
+import { register } from 'swiper/element/bundle';
 
 function App() {
   const { tg } = useTelegram();
   const [currentPage, setCurrentPage] = useState();
+
+  useEffect(() => {
+    register();
+  }, [])
 
   useEffect(() => {
     if (localStorage.getItem('isFirstEntry') === 'true') {
