@@ -12,22 +12,21 @@ const RecipeForm = () => {
 	const { tg, queryId } = useTelegram();
 
 	const recipeSchema = {
-		// дописать логику добавления картинок
 		img: "#",
 		title: "",
 		type: [],
 		ingredients: [],
+		quantities: [],
+		units: [],
 		cook: "",
-		time: 0,
-		link: "",
-		tags: "",
-		author: tg.initDataUnsafe?.WebAppUser || null,
+		time: 10,
+		author: tg.initDataUnsafe?.user?.username || null,
 		moderating: true
 	}
 
 	const [recipe, setRecipe] = useState(recipeSchema);
-	// undefined, undefined даже с тг
-	console.log(tg.initDataUnsafe, tg.initData.user?.username);
+	// Должно работать
+	console.log(tg.initDataUnsafe.user?.username);
 
 	const [pushResult, setPushResult] = useState('');
 
@@ -79,11 +78,32 @@ const RecipeForm = () => {
 		}));
 	}
 
-	const setIngredients = e => {
+	const setIngredients = (e, i) => {
+		const { ingredients } = recipe;
+		ingredients[i] = e.target.value;
 		setRecipe(prev => ({
 			...prev,
-			ingredients: e.target.value.split(',').map(el => el.trim())
+			ingredients,
 		}));
+	}
+
+	const setQuantities = (e, i) => {
+		const { quantities } = recipe;
+		quantities[i] = +e.target.value;
+		console.log(quantities);
+		setRecipe(prev => ({
+			...prev,
+			quantities,
+		}))
+	}
+
+	const setUnits = (e, i) => {
+		const { units } = recipe;
+		units[i] = e.target.value;
+		setRecipe(prev => ({
+			...prev,
+			units,
+		}))
 	}
 
 	const setCook = (e) => {
@@ -96,21 +116,7 @@ const RecipeForm = () => {
 	const setTime = e => {
 		setRecipe(prev => ({
 			...prev,
-			time: e.target.value
-		}));
-	}
-
-	const setLink = (e) => {
-		setRecipe(prev => ({
-			...prev,
-			link: e.target.value
-		}));
-	}
-
-	const setTags = (e) => {
-		setRecipe(prev => ({
-			...prev,
-			tags: e.target.value
+			time: +e.target.value
 		}));
 	}
 
@@ -162,7 +168,21 @@ const RecipeForm = () => {
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="ingredients">Ингредиенты</label>
-					<textarea onChange={setIngredients} className='recipe-input' name='ingredients' id='ingredients' placeholder='Ингредиенты' value={recipe.ingredients}></textarea>
+					{[...Array(recipe.ingredients.length + 1)].map((el, i) => {
+						return (<>
+							<input onChange={e => setIngredients(e, i)} className='recipe-input recipe-input-short' name='ingredients' id={`ingredients-${i}`} placeholder='Ингредиенты' /* value={recipe.ingredients} */ type='text' />
+							<input onChange={e => setQuantities(e, i)} className='recipe-input  recipe-input-short' name='quantities' id={`quantities-${i}`} /* value={recipe.quantities} */ type="number" />
+							<select onChange={e => setUnits(e, i)} className='recipe-input  recipe-input-short' name="units" id={`units-${i}`}>
+								<option className='recipe-input recipe-input-short' value="" selected disabled>Единицы</option>
+								<option className='recipe-input recipe-input-short' value="g">г</option>
+								<option className='recipe-input recipe-input-short' value="ml">мл</option>
+								<option className='recipe-input recipe-input-short' value="pcs">шт</option>
+								<option className='recipe-input recipe-input-short' value="tablespoons">ст.л.</option>
+								<option className='recipe-input recipe-input-short' value="teaspoons">ч.л.</option>
+								<option className='recipe-input recipe-input-short' value="cups">стаканы</option>
+							</select>
+						</>)
+					})}
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="cook">Приготовление</label>
@@ -175,14 +195,6 @@ const RecipeForm = () => {
 						минут(ы)
 					</label>
 					<input type='range' onChange={setTime} className='recipe-input' name='time' min="10" max="120" value={recipe.time} />
-				</div>
-				<div className='recipe-field'>
-					<label className='recipe-label' htmlFor="link">Link</label>
-					<input onChange={setLink} className='recipe-input' type="url" name='ingredients' id='link' placeholder='Link' value={recipe.link} />
-				</div>
-				<div className='recipe-field'>
-					<label className='recipe-label' htmlFor="tags">Тэги</label>
-					<input onChange={setTags} className='recipe-input' type="text" name='tags' id='tags' placeholder='Тэги' value={recipe.tags} />
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="img">Прикрепить изображение</label>
