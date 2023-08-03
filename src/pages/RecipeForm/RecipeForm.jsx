@@ -169,11 +169,11 @@ const RecipeForm = () => {
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="ingredients">Ингредиенты</label>
 					{[...Array(recipe.ingredients.length + 1)].map((el, i) => {
-						return (<>
+						return (<div className='recipe-input-wrapper' key={i}>
 							<input onChange={e => setIngredients(e, i)} className='recipe-input recipe-input-short' name='ingredients' id={`ingredients-${i}`} placeholder='Ингредиенты' /* value={recipe.ingredients} */ type='text' />
 							<input onChange={e => setQuantities(e, i)} className='recipe-input  recipe-input-short' name='quantities' id={`quantities-${i}`} /* value={recipe.quantities} */ type="number" />
 							<select onChange={e => setUnits(e, i)} className='recipe-input  recipe-input-short' name="units" id={`units-${i}`}>
-								<option className='recipe-input recipe-input-short' value="" selected disabled>Единицы</option>
+								<option className='recipe-input recipe-input-short' selected disabled>Единицы</option>
 								<option className='recipe-input recipe-input-short' value="g">г</option>
 								<option className='recipe-input recipe-input-short' value="ml">мл</option>
 								<option className='recipe-input recipe-input-short' value="pcs">шт</option>
@@ -181,7 +181,7 @@ const RecipeForm = () => {
 								<option className='recipe-input recipe-input-short' value="teaspoons">ч.л.</option>
 								<option className='recipe-input recipe-input-short' value="cups">стаканы</option>
 							</select>
-						</>)
+						</div>)
 					})}
 				</div>
 				<div className='recipe-field'>

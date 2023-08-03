@@ -38,7 +38,7 @@
 }
 
 .recipe-input-short[type="text"] {
-	width: 50%;
+	width: 45%;
 }
 
 .recipe-input-short[type="number"] {
@@ -46,11 +46,18 @@
 }
 
 .recipe-input-short[name="units"] {
-	width: 30%;
+	width: 33%;
 }
 
 .recipe-input::placeholder {
 	color: var(--tg-theme-hint-color);
+}
+
+.recipe-input-wrapper {
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto 0.5em;
+	width: 80%;
 }
 
 .recipe-dropdown {

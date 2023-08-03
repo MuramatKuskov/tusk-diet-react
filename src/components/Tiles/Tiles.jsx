@@ -67,7 +67,7 @@ const Tiles = () => {
 			<swiper-container init="false" ref={swiperRef}>
 				{types.map((el, index) => {
 					return (
-						<swiper-slide>
+						<swiper-slide key={index}>
 							<div onClick={handleClick} data={el.data} className="tiles-item" key={index}>
 								<p className="tiles-label">{el.label}</p>
 								<img className='tiles-img' src={el.src} alt={el.label} loading='lazy' />
@@ -79,17 +79,5 @@ const Tiles = () => {
 		</div>
 	);
 };
-
-/* <div className='tiles'>	// оболочка карусели
-				{types.map((el, index) => {
-					return (
-						// слайды
-						<div onClick={handleClick} data={el.data} className="tiles-item" key={index}>
-						<p className="tiles-label">{el.label}</p>
-						<img className='tiles-img' src={el.src} alt={el.label} loading='lazy' />
-					</div>
-					)
-				})}
-			</div> */
 
 export default Tiles;
