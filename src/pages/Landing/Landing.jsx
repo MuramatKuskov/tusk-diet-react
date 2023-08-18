@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import './Landing.css';
 import Index from '../Index/Index';
 import { PageNavContext } from '../../context';
+import Button from '../../UI/Button/Button';
 
 const Landing = (props) => {
 	const { currentPage, setCurrentPage } = useContext(PageNavContext);
@@ -27,7 +28,7 @@ const Landing = (props) => {
 					протеинового коктейля (или бананового смузи). Будь настоящим хозяином
 					своей кухни и владыкой своего рациона!</p>
 			</article>
-			<button className='confirm' type='button' onClick={handleClick}>Понятно</button>
+			<Button callback={handleClick}>Понятно</Button>
 		</div>
 	);
 };

@@ -6,6 +6,7 @@ import Index from '../../pages/Index/Index';
 import Search from '../../pages/Search/Search';
 import ShoppingList from '../../pages/ShoppingList/ShoppingList';
 import { PageNavContext } from '../../context';
+import Roadmap from '../../pages/Roadmap/Roadmap';
 
 const Header = () => {
 	const [sideBarStatus, setSideBarStatus] = useState(false);
@@ -30,6 +31,9 @@ const Header = () => {
 				setCurrentPage(<ShoppingList />);
 				break;
 			case 4:
+				setCurrentPage(<Roadmap />);
+				break;
+			case 5:
 				setCurrentPage(<Landing />);
 				break;
 		}
@@ -53,8 +57,9 @@ const Header = () => {
 					<li className="sidebar-link" onClick={handleNav} value={0}>Главная</li>
 					<li className="sidebar-link" onClick={handleNav} value={1}>Поиск рецептов</li>
 					<li className="sidebar-link" onClick={handleNav} value={2}>Добавить рецепт</li>
-					<li className="sidebar-link" onClick={handleNav} value={3}>Список покупок</li>
-					<li className="sidebar-link" onClick={handleNav} value={4}>Описание</li>
+					{/* <li className="sidebar-link" onClick={handleNav} value={3}>Список покупок</li> */}
+					<li className="sidebar-link" onClick={handleNav} value={4}>Дорожная карта</li>
+					<li className="sidebar-link" onClick={handleNav} value={5}>Описание</li>
 				</ol>
 			</div>
 		</header>

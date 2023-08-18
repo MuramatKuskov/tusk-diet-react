@@ -37,7 +37,7 @@
 	text-align: center;
 	font-weight: 600;
 	color: var(--tg-theme-text-color);
-	background-color: rgba(41, 41, 41, 0.48);
+	background-color: rgba(41, 41, 41, 0.7);
 	border-radius: 0 0 20px 20px;
 }
 

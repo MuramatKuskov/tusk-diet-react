@@ -2,7 +2,6 @@
 	display: flex;
 	align-items: center;
 	padding: 1em 1.4em;
-	background-color: #212121;
 	background-color: var(--tg-theme-secondary-bg-color);
 }
 
@@ -11,7 +10,6 @@
 	margin: 0 auto;
 	font-size: 2em;
 	font-weight: 600;
-	color: #ffffff;
 	color: var(--tg-theme-text-color);
 }
 
@@ -43,7 +41,6 @@
 	height: 100%;
 	transition: 1s;
 	background-color: var(--tg-theme-bg-color);
-	background-color: #212121;
 	z-index: 9;
 }
 

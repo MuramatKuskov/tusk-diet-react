@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
 import { useFetching } from '../../hooks/useFetching';
 import Loader from '../../UI/Loader/Loader';
 import PopUp from '../../UI/PopUp/PopUp';
+import SearchBar from '../../components/SearchBar/SearchBar';
 
 const backURL = process.env.REACT_APP_backURL;
 
@@ -14,19 +15,22 @@ const RecipeForm = () => {
 	const recipeSchema = {
 		img: "#",
 		title: "",
+		origin: "",
 		type: [],
 		ingredients: [],
 		quantities: [],
 		units: [],
 		cook: "",
+		difficulty: "",
 		time: 10,
-		author: tg.initDataUnsafe?.user?.username || null,
+		rating: null,
+		ratingIterator: 0,
+		link: "",
+		author: tg.initDataUnsafe?.user?.username || "Muramat_Kuskov",
 		moderating: true
 	}
 
 	const [recipe, setRecipe] = useState(recipeSchema);
-	// Должно работать
-	console.log(tg.initDataUnsafe.user?.username);
 
 	const [pushResult, setPushResult] = useState('');
 
@@ -62,10 +66,10 @@ const RecipeForm = () => {
 		}
 	}, [recipe.title, recipe.ingredients, recipe.cook])
 
-	const setTitle = (e) => {
+	const setTitle = newTitle => {
 		setRecipe(prev => ({
 			...prev,
-			title: e.target.value
+			title: newTitle
 		}));
 	}
 
@@ -80,7 +84,7 @@ const RecipeForm = () => {
 
 	const setIngredients = (e, i) => {
 		const { ingredients } = recipe;
-		ingredients[i] = e.target.value;
+		ingredients[i] = e.target.value.toLowerCase();
 		setRecipe(prev => ({
 			...prev,
 			ingredients,
@@ -90,7 +94,6 @@ const RecipeForm = () => {
 	const setQuantities = (e, i) => {
 		const { quantities } = recipe;
 		quantities[i] = +e.target.value;
-		console.log(quantities);
 		setRecipe(prev => ({
 			...prev,
 			quantities,
@@ -120,6 +123,13 @@ const RecipeForm = () => {
 		}));
 	}
 
+	const setLink = e => {
+		setRecipe(prev => ({
+			...prev,
+			link: e.target.value
+		}))
+	}
+
 	const setImage = e => {
 		setRecipe(prev => ({
 			...prev,
@@ -140,6 +150,8 @@ const RecipeForm = () => {
 	const clearInputs = () => {
 		setRecipe(recipeSchema);
 		document.querySelectorAll(".selected").forEach(el => el.classList.remove('selected'))
+		document.querySelector("#ingredients-0").value = "";
+		document.querySelector("#quantities-0").value = "";
 	}
 
 	return (
@@ -148,7 +160,7 @@ const RecipeForm = () => {
 			<form className='recipe-form'>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="title">Название</label>
-					<input onChange={setTitle} className='recipe-input' type="text" name='title' id='title' placeholder='Название' value={recipe.title} />
+					<SearchBar setTitle={setTitle} placeholder="Название" /* value={recipe.title} */ />
 				</div>
 				<div className="recipe-field">
 					<label className="recipe-label">Тип блюда</label>
@@ -170,23 +182,24 @@ const RecipeForm = () => {
 					<label className='recipe-label' htmlFor="ingredients">Ингредиенты</label>
 					{[...Array(recipe.ingredients.length + 1)].map((el, i) => {
 						return (<div className='recipe-input-wrapper' key={i}>
-							<input onChange={e => setIngredients(e, i)} className='recipe-input recipe-input-short' name='ingredients' id={`ingredients-${i}`} placeholder='Ингредиенты' /* value={recipe.ingredients} */ type='text' />
-							<input onChange={e => setQuantities(e, i)} className='recipe-input  recipe-input-short' name='quantities' id={`quantities-${i}`} /* value={recipe.quantities} */ type="number" />
+							<input onChange={e => setIngredients(e, i)} className='recipe-input recipe-input-short' name='ingredients' id={`ingredients-${i}`} placeholder='Ингредиенты' type='text' />
+							<input onChange={e => setQuantities(e, i)} className='recipe-input  recipe-input-short' name='quantities' id={`quantities-${i}`} type="number" />
 							<select onChange={e => setUnits(e, i)} className='recipe-input  recipe-input-short' name="units" id={`units-${i}`}>
-								<option className='recipe-input recipe-input-short' selected disabled>Единицы</option>
-								<option className='recipe-input recipe-input-short' value="g">г</option>
-								<option className='recipe-input recipe-input-short' value="ml">мл</option>
-								<option className='recipe-input recipe-input-short' value="pcs">шт</option>
-								<option className='recipe-input recipe-input-short' value="tablespoons">ст.л.</option>
-								<option className='recipe-input recipe-input-short' value="teaspoons">ч.л.</option>
-								<option className='recipe-input recipe-input-short' value="cups">стаканы</option>
+								<option className='recipe-input recipe-option' selected disabled>Единицы</option>
+								<option className='recipe-input recipe-option' value="кг">кг</option>
+								<option className='recipe-input recipe-option' value="г">г</option>
+								<option className='recipe-input recipe-option' value="мл">мл</option>
+								<option className='recipe-input recipe-option' value="шт">шт</option>
+								<option className='recipe-input recipe-option' value="ст.л.">ст.л.</option>
+								<option className='recipe-input recipe-option' value="ч.л.">ч.л.</option>
+								<option className='recipe-input recipe-option' value="стаканы">стаканы</option>
 							</select>
 						</div>)
 					})}
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="cook">Приготовление</label>
-					<textarea onChange={setCook} className='recipe-input' name='cook' id='cook' placeholder='Приготовление' rows="6" value={recipe.cook}></textarea>
+					<textarea onChange={setCook} className='recipe-input' name='cook' id='cook' placeholder='Приготовление' rows="6" /* value={recipe.cook} */></textarea>
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="time">
@@ -195,6 +208,10 @@ const RecipeForm = () => {
 						минут(ы)
 					</label>
 					<input type='range' onChange={setTime} className='recipe-input' name='time' min="10" max="120" value={recipe.time} />
+				</div>
+				<div className="recipe-field">
+					<label htmlFor="link" className="recipe-label">Ссылка на источник</label>
+					<input className='recipe-input' onChange={setLink} type="text" name='link' id='link' value={recipe.link} placeholder='Ссылка' />
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="img">Прикрепить изображение</label>

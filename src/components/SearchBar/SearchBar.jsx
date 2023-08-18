@@ -1,11 +1,10 @@
-import React, { useContext, useDeferredValue, useEffect, useState } from 'react';
+import React, { forwardRef, useContext, useEffect, useState } from 'react';
 import './SearchBar.css';
 import { useFetching } from '../../hooks/useFetching';
 import { PageNavContext } from '../../context';
 import Recipe from '../../pages/Recipe/Recipe';
 
-const SearchBar = (props) => {
-	const { setTitle } = props;
+const SearchBar = forwardRef(({ setTitle, placeholder, value }, ref) => {
 	const [searchQuery, setSearchQuery] = useState({ title: '' });
 	const [foundRecipes, setFoundRecipes] = useState([]);
 	const { currentPage, setCurrentPage } = useContext(PageNavContext);
@@ -25,10 +24,10 @@ const SearchBar = (props) => {
 	});
 
 	useEffect(() => {
-		if (searchQuery?.title?.length < 1) return;
 		if (setTitle) setTitle(searchQuery.title);
+		if (searchQuery?.title?.length < 1) return;
 		let timer;
-		const abortController = new AbortController()
+		const abortController = new AbortController();
 
 		async function fetchRecipes() {
 			try {
@@ -43,7 +42,6 @@ const SearchBar = (props) => {
 					return;
 				}
 			}
-			//await getRecipe().then(res => setFoundRecipes(res));
 		}
 		function debounceFetch() {
 			clearTimeout(timer);
@@ -57,48 +55,47 @@ const SearchBar = (props) => {
 		};
 	}, [searchQuery]);
 
-	useEffect(() => {
+	/* useEffect(() => {
 		if (searchQuery._id) {
 			setCurrentPage(<Recipe recipe={foundRecipes[0]} />);
 		}
-	}, [foundRecipes])
+	}, [foundRecipes]) */
 
 	function handleInput(e) {
-		setSearchQuery({ title: e.target.value });
+		setSearchQuery({ title: e.target.value.toLowerCase() });
 	}
 
 	function handleClick(e) {
 		const target = foundRecipes.find(el => el._id === e.target.id);
-		setSearchQuery({ _id: target._id });
+		//setSearchQuery({ _id: target._id });
+		setCurrentPage(<Recipe recipe={target} />);
 	}
 
 	function toggleFocus(e) {
 		if (e.target.classList.contains('inFocus')) {
 			return setTimeout(() => {
 				e.target.classList.remove('inFocus');
-			}, 10);
+			}, 50);
 		}
 		e.target.classList.add('inFocus');
 	}
 
 	function showHints() {
-		if (searchQuery?.title?.length > 1) {
-			return <ul className="hints">
-				{foundRecipes.length ?
-					foundRecipes.map((el, index) => {
-						return <li className="hints-item" key={index} id={el._id} onClick={handleClick}>{el.title}</li>
-					})
-					: <li className="hints-item">{'Ничего не найдено...'}</li>}
-			</ul>
-		}
+		return <ul className="hints">
+			{foundRecipes.length ?
+				foundRecipes.map((el, index) => {
+					return <li className="hints-item" key={index} id={el._id} onClick={handleClick}>{el.title.charAt(0).toUpperCase() + el.title.slice(1)}</li>
+				})
+				: <li className="hints-item">{'Ничего не найдено...'}</li>}
+		</ul>
 	}
 
 	return (
 		<>
-			<input className='searchbar' type="search" name="src" id="src" onInput={handleInput} onFocus={toggleFocus} onBlur={toggleFocus} placeholder='Найти рецепт...' />
-			{showHints()}
+			<input className='searchbar' type="search" name="src" id="src" onInput={handleInput} onFocus={toggleFocus} onBlur={toggleFocus} placeholder={placeholder} value={value} ref={ref} />
+			{searchQuery?.title?.length > 1 && showHints()}
 		</>
 	);
-};
+});
 
 export default SearchBar;

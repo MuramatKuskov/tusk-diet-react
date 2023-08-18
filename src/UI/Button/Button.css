@@ -1,0 +1,26 @@
+.button {
+	width: fit-content;
+	margin: 0 auto;
+	font-size: 1em;
+	padding: 1em 3em;
+	border: 2px solid var(--tg-theme-button-color);
+	border-radius: 50px;
+	transition: 500ms;
+	color: var(--tg-theme-text-color);
+	background-color: var(--tg-theme-button-color);
+}
+
+.button:hover {
+	cursor: pointer;
+	transform: scale(1.2);
+	filter: brightness(80%);
+}
+
+.button-ghost {
+	font-size: 0.75em;
+	padding: 0.3em 0.5em;
+	color: var(--tg-theme-hint-color);
+	background-color: transparent;
+	border-width: 1px;
+	border-radius: 5px;
+}

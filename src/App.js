@@ -14,6 +14,7 @@ function App() {
 
   useEffect(() => {
     register();
+    tg.ready();
   }, [])
 
   useEffect(() => {
@@ -24,10 +25,6 @@ function App() {
       setCurrentPage(<Index />);
     }
   }, [])
-
-  useEffect(() => {
-    tg.ready();
-  }, []);
 
   return (
     <PageNavContext.Provider value={{

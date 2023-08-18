@@ -14,19 +14,3 @@
 .description {
 	margin: 1em 0;
 }
-
-.confirm {
-	font-size: 1em;
-	padding: 1em 3em;
-	border: 2px solid var(--tg-theme-button-color);
-	border-radius: 50px;
-	transition: 500ms;
-	color: var(--tg-theme-text-color);
-	background-color: var(--tg-theme-button-color);
-}
-
-.confirm:hover {
-	cursor: pointer;
-	transform: scale(1.2);
-	filter: brightness(80%);
-}

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef } from 'react';
 import './Tiles.css';
 import Search from '../../pages/Search/Search';
 import { PageNavContext } from '../../context';
-import 'swiper/css/bundle';
 
 const types = [
 	{ data: 'breakfast', label: 'Завтрак', src: 'https://images.pexels.com/photos/3850660/pexels-photo-3850660.jpeg', },

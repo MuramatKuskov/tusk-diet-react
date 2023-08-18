@@ -1,14 +1,14 @@
 .filters {
 	display: flex;
 	flex-direction: column;
+}
 
-	.searchbar, .hints {
-		margin: 0 auto;
-	}
+.searchbar, .hints {
+	margin: 0 auto;
 }
 
 .filters-input {
-	margin: 2em auto 0;
+	margin: 1em auto 0;
 }
 
 .filters-option {}
@@ -21,6 +21,19 @@
 	align-items: center;
 	row-gap: 2em;
 }
+
+.recipes-scroll {
+	position: fixed;
+	top: 2em;
+	left: calc(50% - 27.5px);
+	transform: translateY(-4em);
+	transition: 500ms ease-out;
+}
+
+.recipes-scroll.visible {
+	transform: translateY(0);
+}
+
 
 .recipe-item {
 	display: flex;

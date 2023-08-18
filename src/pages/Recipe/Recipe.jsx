@@ -7,7 +7,7 @@ const Recipe = (props) => {
 	return (
 		<div className='page page-recipe'>
 			<div className="recipe">
-				<h2 className="recipe-title">{recipe.title}</h2>
+				<h2 className="recipe-title">{recipe.title.charAt(0).toUpperCase() + recipe.title.slice(1)}</h2>
 				<img className='recipe-img' src={recipe.img} />
 				<div className="recipe-info">
 					<p className="recipe-info-item">{recipe.type.join(', ')}</p>
@@ -16,7 +16,7 @@ const Recipe = (props) => {
 				</div>
 				<h3 className="recipe-subtitle">Ингредиенты:</h3>
 				<ul className="recipe-ingredients">
-					{recipe.ingredients.map((el, i) => <li className="recipe-ingredient" key={i}>{el}</li>)}
+					{recipe.ingredients.map((el, i) => <li className="recipe-ingredient" key={i}>{el.charAt(0).toUpperCase() + el.slice(1)}</li>)}
 				</ul>
 				<h3 className="recipe-subtitle">Приготовление:</h3>
 				{recipe.cook.split('\n').map((el, i) => {
