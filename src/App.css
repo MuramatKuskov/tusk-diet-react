@@ -72,6 +72,10 @@ img {
   color: var(--tg-theme-text-color);
 }
 
+.dev {
+  display: none;
+}
+
 .page {
   flex: 1 0 auto;
   padding: 2em 1.5em;

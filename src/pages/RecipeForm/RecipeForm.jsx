@@ -27,6 +27,7 @@ const RecipeForm = () => {
 		ratingIterator: 0,
 		link: "",
 		author: tg.initDataUnsafe?.user?.username || "Muramat_Kuskov",
+		anonymously: false,
 		moderating: true
 	}
 
@@ -137,6 +138,13 @@ const RecipeForm = () => {
 		}))
 	}
 
+	const setAnonymity = () => {
+		setRecipe(prev => ({
+			...prev,
+			anonymously: !prev.anonymously
+		}))
+	}
+
 	const handleSelect = e => {
 		e.target.classList.toggle("selected");
 		setType(e);
@@ -217,7 +225,9 @@ const RecipeForm = () => {
 					<label className='recipe-label' htmlFor="img">Прикрепить изображение</label>
 					<input onChange={setImage} className='recipe-input' type="file" name='img' id='img' value='' />
 				</div>
-				<button type='button' onClick={pushRecipe}>Push</button>
+				<input onChange={setAnonymity} type="checkbox" id="authorship" name="authorship" />
+				<label htmlFor="authorship">Скрыть мой Username на странице рецепта</label>
+				<button type='button' className='dev' onClick={pushRecipe}>Push</button>
 			</form>
 			{pushResult && <PopUp text={pushResult} callback={() => { setPushResult('') }} />}
 			{pushingError && <PopUp text={pushingError} callback={() => { setPushingError('') }} />}

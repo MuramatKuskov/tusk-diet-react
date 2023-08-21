@@ -12,7 +12,7 @@ const Recipe = (props) => {
 				<div className="recipe-info">
 					<p className="recipe-info-item">{recipe.type.join(', ')}</p>
 					<p className="recipe-info-item">Время приготовления: {recipe.time} минут</p>
-					<p className="recipe-info-item">Автор: {recipe.author}</p>
+					<p className="recipe-info-item">Автор: {recipe.anonymously ? "Anon" : recipe.author}</p>
 				</div>
 				<h3 className="recipe-subtitle">Ингредиенты:</h3>
 				<ul className="recipe-ingredients">
