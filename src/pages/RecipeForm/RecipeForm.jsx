@@ -35,7 +35,7 @@ const RecipeForm = () => {
 	const [pushResult, setPushResult] = useState('');
 
 	const [pushRecipe, isPushingRecipe, pushingError, setPushingError] = useFetching(async () => {
-		await fetch(`http://localhost:8080/pushRecipe`, {
+		await fetch(backURL + "/pushRecipe", {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

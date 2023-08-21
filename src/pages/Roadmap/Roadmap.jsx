@@ -1,13 +1,5 @@
 import React from 'react';
 import './Roadmap.css';
-// import coreChat from "../Roadmap/core-chat.webp";
-// import search from "../Roadmap/search.webp";
-// import inline from "../Roadmap/inline.webp";
-//import roadmap from "../Roadmap/roadmap.webp";
-// import webApp from "../Roadmap/webApp.webp";
-// import info from "../Roadmap/info.webp";
-// import cart from "../Roadmap/cart.webp";
-// import interactive from "../Roadmap/interactive.webp";
 
 const Roadmap = () => {
 	const features = [
@@ -29,7 +21,6 @@ const Roadmap = () => {
 						<p className="roadmap-description">{element.description}</p>
 					</div>
 					<div className='roadmap-image-container'><div className="roadmap-image" id={element.id}></div></div>
-					{/* <img src={element.img} className="roadmap-image" loading='lazy' /> */}
 				</section>
 			})}
 		</div>

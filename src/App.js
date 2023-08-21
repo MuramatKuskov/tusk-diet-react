@@ -18,12 +18,17 @@ function App() {
   }, [])
 
   useEffect(() => {
+    let smth = true;
+    if (!smth) return
     if (localStorage.getItem('isFirstEntry') === 'true') {
+      console.log('First Visit! Welcome!');
       setCurrentPage(<Landing />);
       localStorage.setItem('isFirstEntry', 'false');
     } else {
+      console.log('Not First Visit! Still Welcome!');
       setCurrentPage(<Index />);
     }
+    smth = false;
   }, [])
 
   return (

@@ -10,7 +10,7 @@ const SearchBar = forwardRef(({ setTitle, placeholder, value }, ref) => {
 	const { currentPage, setCurrentPage } = useContext(PageNavContext);
 
 	const [getRecipe, isGettingRecipe, getError] = useFetching(async signal => {
-		const url = new URL("http://localhost:8080/getRecipes");
+		const url = new URL(process.env.REACT_APP_backURL + "/getRecipes");
 		url.search = new URLSearchParams(searchQuery);
 		let data = await fetch(url.toString(), {
 			method: 'GET',

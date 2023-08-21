@@ -26,7 +26,7 @@ const Search = (props) => {
 	const lastElementObserver = useRef();
 
 	const [fetchRecipes, isFetching, fetchError, setFetchError] = useFetching(async signal => {
-		const url = new URL("http://localhost:8080/getRecipes");
+		const url = new URL(process.env.REACT_APP_backURL + "/getRecipes");
 		query.skip = skip;
 		query.limit = 9;
 		url.search = new URLSearchParams(query);
@@ -102,7 +102,6 @@ const Search = (props) => {
 				scrollBtn.current.classList.remove('visible');
 			}
 		})
-		console.log(scrollAnchor.current);
 		scrollObserver.current.observe(scrollAnchor.current);
 		return () => scrollObserver.current.disconnect();
 	}, [])
