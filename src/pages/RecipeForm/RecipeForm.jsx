@@ -168,7 +168,7 @@ const RecipeForm = () => {
 			<form className='recipe-form'>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="title">Название</label>
-					<SearchBar setTitle={setTitle} placeholder="Название" /* value={recipe.title} */ />
+					<SearchBar setTitle={setTitle} placeholder="Название" value={recipe.title} />
 				</div>
 				<div className="recipe-field">
 					<label className="recipe-label">Тип блюда</label>
@@ -207,7 +207,7 @@ const RecipeForm = () => {
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="cook">Приготовление</label>
-					<textarea onChange={setCook} className='recipe-input' name='cook' id='cook' placeholder='Приготовление' rows="6" /* value={recipe.cook} */></textarea>
+					<textarea onChange={setCook} className='recipe-input' name='cook' id='cook' placeholder='Приготовление' rows="6" value={recipe.cook}></textarea>
 				</div>
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="time">
