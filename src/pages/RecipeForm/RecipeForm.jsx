@@ -152,8 +152,7 @@ const RecipeForm = () => {
 
 	const handleResponse = res => {
 		setPushResult(res.statusText);
-		console.log(res.statusText, res.status);
-		res.statusText === 'OK' && clearInputs();
+		res.status === 200 && clearInputs();
 	}
 
 	const clearInputs = () => {
