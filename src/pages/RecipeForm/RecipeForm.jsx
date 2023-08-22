@@ -65,6 +65,7 @@ const RecipeForm = () => {
 				text: 'Добавить рецепт'
 			})
 		}
+		return () => tg.MainButton.hide();
 	}, [recipe.title, recipe.ingredients, recipe.cook])
 
 	const setTitle = newTitle => {
