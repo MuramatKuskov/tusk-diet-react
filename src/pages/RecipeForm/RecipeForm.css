@@ -42,6 +42,7 @@
 }
 
 .recipe-input-short[type="number"] {
+	padding: 0.3em;
 	width: 15%;
 }
 
