@@ -196,6 +196,7 @@ const RecipeForm = () => {
 							<select onChange={e => setUnits(e, i)} className='recipe-input  recipe-input-short' name="units" id={`units-${i}`}>
 								<option className='recipe-input recipe-option' selected disabled>Единицы</option>
 								<option className='recipe-input recipe-option' value="кг">кг</option>
+								<option className='recipe-input recipe-option' value="л">л</option>
 								<option className='recipe-input recipe-option' value="г">г</option>
 								<option className='recipe-input recipe-option' value="мл">мл</option>
 								<option className='recipe-input recipe-option' value="шт">шт</option>
