@@ -16,7 +16,14 @@ const Recipe = (props) => {
 				</div>
 				<h3 className="recipe-subtitle">Ингредиенты:</h3>
 				<ul className="recipe-ingredients">
-					{recipe.ingredients.map((el, i) => <li className="recipe-ingredient" key={i}>{el.charAt(0).toUpperCase() + el.slice(1)}</li>)}
+					{recipe.ingredients.map((el, i) => {
+						// если указано только наименование продукта
+						if (!recipe.quantities[i]) {
+							return <li className="recipe-ingredient" key={i}>{el.charAt(0).toUpperCase() + el.slice(1)}</li>
+						}
+						// если указано еще кол-во
+						return <li className="recipe-ingredient" key={i}>{el.charAt(0).toUpperCase() + el.slice(1) + " — " + recipe.quantities[i] + recipe.units[i] || ""}</li>
+					})}
 				</ul>
 				<h3 className="recipe-subtitle">Приготовление:</h3>
 				{recipe.cook.split('\n').map((el, i) => {
