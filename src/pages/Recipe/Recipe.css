@@ -3,9 +3,7 @@
 	color: var(--tg-theme-text-color);
 }
 
-.recipe-title {
-	text-align: center;
-}
+.recipe-title {}
 
 .recipe-img {
 	margin: 2em 0;
@@ -26,9 +24,38 @@
 	margin: 2em 0 0.5em;
 }
 
-.recipe-ingredients {}
+.recipe-ingredients {
+	max-width: 300px;
+}
 
-.recipe-ingredient {}
+.recipe-ingredient {
+	display: flex;
+	padding: 0.3em 0;
+}
+
+.ingredient-info {
+	flex: 0 1 100%
+}
+
+.ingredient-actions {
+	display: flex;
+	justify-content: space-between;
+}
+
+.action {
+	width: 1em;
+	height: 1em;
+	border-radius: 50%;
+	transition: 500ms;
+}
+
+.action.added {
+	transform: rotateZ(45deg);
+}
+
+.action:hover {
+	cursor: pointer;
+}
 
 .recipe-cook {}
 

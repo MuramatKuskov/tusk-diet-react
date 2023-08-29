@@ -81,3 +81,7 @@ img {
   padding: 2em 1.5em;
   background-color: var(--tg-theme-bg-color);
 }
+
+.title {
+  text-align: center;
+}

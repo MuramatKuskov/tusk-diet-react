@@ -1,0 +1,37 @@
+.shopping {}
+
+.shopping-title {}
+
+.shopping-attention {
+	display: block;
+	width: fit-content;
+	margin: 0 auto;
+}
+
+.shopping-list {
+	max-width: 300px;
+}
+
+.shopping-item {
+	display: flex;
+	padding: 0.3em 0;
+}
+
+.shopping-item.strikethrough > .shopping-info {
+	text-decoration: line-through;
+}
+
+.shopping-info {
+	flex: 0 1 100%
+}
+
+.shopping-actions {
+	display: flex;
+	gap: 1em;
+}
+
+.action {}
+
+.action-turned {
+	transform: rotateZ(45deg);
+}
