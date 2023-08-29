@@ -36,6 +36,11 @@ const ShoppingList = () => {
 		)
 	}
 
+	function sendMessage() {
+		console.log("sending ", shoppingList);
+		tg.sendData(shoppingList);
+	}
+
 	return (
 		<div className='page page-shopping shopping'>
 			<h2 className="shopping-title title">Список покупок</h2>
@@ -54,7 +59,7 @@ const ShoppingList = () => {
 					)
 				})}
 			</ol>
-			<Button callback={() => tg.sendData(shoppingList)}>Сохранить список в чат</Button>
+			<Button callback={sendMessage}>Сохранить список в чат</Button>
 		</div>
 	);
 };
