@@ -8,20 +8,10 @@ import { PageNavContext, ShoppingListContext } from './context';
 import Index from './pages/Index/Index';
 import { register } from 'swiper/element/bundle';
 
-import ShoppingList from './pages/ShoppingList/ShoppingList';
-
 function App() {
   const { tg } = useTelegram();
   const [currentPage, setCurrentPage] = useState();
-  // const [shoppingList, setShoppingList] = useState([]);
-  const [shoppingList, setShoppingList] = useState([
-    { name: "smgfskmg", quantity: 3, unit: "шт" },
-    { name: "smgfskmg", quantity: 3, unit: "шт" },
-    { name: "smgfskmg", quantity: 3, unit: "шт" },
-    { name: "smgfskmg", quantity: 3, unit: "шт" },
-    { name: "smgfskmg", quantity: 3, unit: "шт" },
-    { name: "smgfskmg", quantity: 3, unit: "шт" }
-  ]);
+  const [shoppingList, setShoppingList] = useState([]);
 
   useEffect(() => {
     register();
@@ -37,8 +27,7 @@ function App() {
       localStorage.setItem('isFirstEntry', 'false');
     } else {
       console.log('Not First Visit! Still Welcome!');
-      // setCurrentPage(<Index />);
-      setCurrentPage(<ShoppingList />)
+      setCurrentPage(<Index />);
     }
     smth = false;
   }, [])
