@@ -57,7 +57,7 @@ const Header = () => {
 					<li className="sidebar-link" onClick={handleNav} value={0}>Главная</li>
 					<li className="sidebar-link" onClick={handleNav} value={1}>Поиск рецептов</li>
 					<li className="sidebar-link" onClick={handleNav} value={2}>Добавить рецепт</li>
-					{/* <li className="sidebar-link" onClick={handleNav} value={3}>Список покупок</li> */}
+					<li className="sidebar-link" onClick={handleNav} value={3}>Список покупок</li>
 					<li className="sidebar-link" onClick={handleNav} value={4}>Дорожная карта</li>
 					<li className="sidebar-link" onClick={handleNav} value={5}>Описание</li>
 				</ol>

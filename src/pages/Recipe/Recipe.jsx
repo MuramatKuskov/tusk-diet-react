@@ -1,8 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
+import { ShoppingListContext } from '../../context';
 import './Recipe.css';
 
 const Recipe = (props) => {
+	const { shoppingList, setShoppingList } = useContext(ShoppingListContext);
 	const { recipe } = props;
+
+	function handleList(e) {
+		const index = e.target.dataset.index;
+		const isAdded = e.target.classList.toggle("added");
+		if (isAdded) return addToList(index)
+		return removeFromList(index)
+	}
+
+	function addToList(i) {
+		setShoppingList(prev => [
+			...prev,
+			{
+				name: recipe.ingredients[i],
+				quantity: recipe.quantities[i],
+				unit: recipe.units[i]
+			}
+		]);
+	}
+
+	function removeFromList(i) {
+		setShoppingList(prev => [
+			...prev.filter(el => el.name != recipe.ingredients[i])
+		]);
+	}
 
 	return (
 		<div className='page page-recipe'>
@@ -17,12 +43,16 @@ const Recipe = (props) => {
 				<h3 className="recipe-subtitle">Ингредиенты:</h3>
 				<ul className="recipe-ingredients">
 					{recipe.ingredients.map((el, i) => {
-						// если указано только наименование продукта
-						if (!recipe.quantities[i]) {
-							return <li className="recipe-ingredient" key={i}>{el.charAt(0).toUpperCase() + el.slice(1)}</li>
-						}
-						// если указано еще кол-во
-						return <li className="recipe-ingredient" key={i}>{el.charAt(0).toUpperCase() + el.slice(1) + " — " + recipe.quantities[i] + recipe.units[i] || ""}</li>
+						return (
+							<li className="recipe-ingredient" key={i}>
+								<p className="ingredient-info">
+									{`${el.charAt(0).toUpperCase()}${el.slice(1)} ${recipe.quantities[i] || ""} ${recipe.units[i] || ""}`}
+								</p>
+								<div className="ingredient-actions">
+									<img className={`action ${shoppingList.find(li => li.name === el) ? "added" : ""}`} onClick={e => handleList(e)} data-index={i} src="assets/plus-ico.svg" alt="добавить в список покупок" />
+								</div>
+							</li>
+						)
 					})}
 				</ul>
 				<h3 className="recipe-subtitle">Приготовление:</h3>

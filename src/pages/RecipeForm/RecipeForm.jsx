@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
 import { useFetching } from '../../hooks/useFetching';
@@ -9,8 +9,24 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 const backURL = process.env.REACT_APP_backURL;
 
 const RecipeForm = () => {
+	const [recipe, setRecipe] = useState(recipeSchema);
+	const [pushResult, setPushResult] = useState('');
+
 	// Работает только из Телеграма
 	const { tg, queryId } = useTelegram();
+
+	const [pushRecipe, isPushingRecipe, pushingError, setPushingError] = useFetching(async () => {
+		await fetch(backURL + "/pushRecipe", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ queryId, recipe }) // queryID работает только из Телеграма
+		})
+			.then(res => {
+				handleResponse(res);
+			});
+	});
 
 	const recipeSchema = {
 		img: "#",
@@ -30,23 +46,6 @@ const RecipeForm = () => {
 		anonymously: false,
 		moderating: true
 	}
-
-	const [recipe, setRecipe] = useState(recipeSchema);
-
-	const [pushResult, setPushResult] = useState('');
-
-	const [pushRecipe, isPushingRecipe, pushingError, setPushingError] = useFetching(async () => {
-		await fetch(backURL + "/pushRecipe", {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ queryId, recipe }) // queryID работает только из Телеграма
-		})
-			.then(res => {
-				handleResponse(res);
-			});
-	});
 
 	useEffect(() => {
 		tg.onEvent('mainButtonClicked', pushRecipe)
