@@ -1,23 +1,43 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './ShoppingList.css';
 import { ShoppingListContext } from '../../context';
-import Button from '../../UI/Button/Button';
 import { useTelegram } from '../../hooks/useTelegram';
+import { useFetching } from '../../hooks/useFetching';
+import Loader from '../../UI/Loader/Loader';
 
 const ShoppingList = () => {
 	const { shoppingList, setShoppingList } = useContext(ShoppingListContext);
-	const [strikethroughIndexes, setStrikethroughIndexes] = useState([]);
-	const { tg } = useTelegram();
+	const { tg, queryId } = useTelegram();
+
+	const [sendListMessage, isSendingListMessage, sendingError] = useFetching(async () => {
+		await fetch(process.env.REACT_APP_backURL + "/sendListMsg", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ queryId, shoppingList }) // queryID работает только из Телеграма
+		})
+			.then(res => {
+				handleResponse(res);
+			});
+	});
 
 	useEffect(() => {
-		if (sessionStorage.getItem("strikethrough") != null && sessionStorage.getItem("strikethrough") != "undefined" && sessionStorage.getItem("strikethrough") !== "") {
-			setStrikethroughIndexes(sessionStorage.getItem("strikethrough").split(","))
+		if (shoppingList.length) {
+			tg.MainButton.show();
+			tg.MainButton.setParams({
+				text: 'Сохранить в чат с ботом'
+			})
 		}
+		return () => tg.MainButton.hide();
 	}, [])
 
 	useEffect(() => {
-		sessionStorage.setItem("strikethrough", strikethroughIndexes);
-	}, [strikethroughIndexes])
+		tg.onEvent('mainButtonClicked', sendListMessage)
+		return () => {
+			tg.offEvent('mainButtonClicked', sendListMessage)
+		}
+	}, [sendListMessage]);
 
 	function removeFromList(e) {
 		const index = e.target.dataset.index;
@@ -26,40 +46,32 @@ const ShoppingList = () => {
 		]);
 	}
 
-	function handleStrikethrough(e) {
-		e.target.parentNode.parentNode.classList.toggle("strikethrough");
-		setStrikethroughIndexes(prev =>
-			[...prev].includes(e.target.dataset.index) ?
-				[...prev].filter(el => el != e.target.dataset.index)
-				:
-				[...prev, e.target.dataset.index].sort((a, b) => a - b)
-		)
-	}
-
-	function sendMessage() {
-		console.log("sending ", shoppingList);
-		tg.sendData(shoppingList);
+	function handleResponse(res) {
+		if (res.status === 200) {
+			tg.showPopup({ title: "Успех", message: "Список покупок сохранен" })
+		} else {
+			tg.showPopup({ title: "Ошибка", message: res.status + ": " + res.message })
+		}
 	}
 
 	return (
 		<div className='page page-shopping shopping'>
 			<h2 className="shopping-title title">Список покупок</h2>
-			<mark className="shopping-attention">Список покупок хранится только во время текущей сессии.
-				Кнопка ниже отправит список в чат с ботом.</mark>
 			<ol className="shopping-list">
 				{shoppingList.map((el, i) => {
 					return (
-						<li className={`shopping-item ${strikethroughIndexes.includes(i.toString()) ? "strikethrough" : ""}`} key={i}>
+						<li className={`shopping-item ${el.strikethrough ? "strikethrough" : ""}`} key={i}>
 							<p className="shopping-info">{`${el.name} ${el.quantity || ""} ${el.unit || ""}`}</p>
 							<div className="shopping-actions">
 								<img className="action action-turned" onClick={e => removeFromList(e)} data-index={i} src="assets/plus-ico.svg" alt="добавить в список покупок" />
-								<img className="action" onClick={e => handleStrikethrough(e)} data-index={i} src="assets/check-ico.svg" alt="зачеркнуть" />
+								<img className="action" onClick={el.strikethrough = !el.strikethrough} src="assets/check-ico.svg" alt="зачеркнуть" />
 							</div>
 						</li>
 					)
 				})}
 			</ol>
-			<Button callback={sendMessage}>Сохранить список в чат</Button>
+			{isSendingListMessage && <Loader />}
+			{sendingError && tg.showPopup({ title: "Ошибка", message: sendingError })}
 		</div>
 	);
 };
