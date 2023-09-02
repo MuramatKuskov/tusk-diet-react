@@ -64,7 +64,7 @@ const ShoppingList = () => {
 							<p className="shopping-info">{`${el.name} ${el.quantity || ""} ${el.unit || ""}`}</p>
 							<div className="shopping-actions">
 								<img className="action action-turned" onClick={e => removeFromList(e)} data-index={i} src="assets/plus-ico.svg" alt="добавить в список покупок" />
-								<img className="action" onClick={el.strikethrough = !el.strikethrough} src="assets/check-ico.svg" alt="зачеркнуть" />
+								<img className="action" onClick={() => el.strikethrough = !el.strikethrough} src="assets/check-ico.svg" alt="зачеркнуть" />
 							</div>
 						</li>
 					)

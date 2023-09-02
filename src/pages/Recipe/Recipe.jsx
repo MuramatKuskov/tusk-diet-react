@@ -19,7 +19,8 @@ const Recipe = (props) => {
 			{
 				name: recipe.ingredients[i],
 				quantity: recipe.quantities[i],
-				unit: recipe.units[i]
+				unit: recipe.units[i],
+				strikethrough: false
 			}
 		]);
 	}
