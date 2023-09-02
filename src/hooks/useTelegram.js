@@ -1,7 +1,6 @@
 const tg = window.Telegram.WebApp;
 
 export function useTelegram() {
-	console.log(tg.initDataUnsafe);
 	const onToggleButton = () => {
 		if (tg.MainButton.isVisible) {
 			tg.MainButton.hide();

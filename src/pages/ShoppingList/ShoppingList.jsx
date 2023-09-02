@@ -54,6 +54,14 @@ const ShoppingList = () => {
 		}
 	}
 
+	function handleStrikethrough(target) {
+		setShoppingList(prev => {
+			const element = prev.find(el => el.name === target.name);
+			element.strikethrough = !element.strikethrough;
+			return [...prev]
+		})
+	}
+
 	return (
 		<div className='page page-shopping shopping'>
 			<h2 className="shopping-title title">Список покупок</h2>
@@ -64,7 +72,7 @@ const ShoppingList = () => {
 							<p className="shopping-info">{`${el.name} ${el.quantity || ""} ${el.unit || ""}`}</p>
 							<div className="shopping-actions">
 								<img className="action action-turned" onClick={e => removeFromList(e)} data-index={i} src="assets/plus-ico.svg" alt="добавить в список покупок" />
-								<img className="action" onClick={() => el.strikethrough = !el.strikethrough} src="assets/check-ico.svg" alt="зачеркнуть" />
+								<img className="action" onClick={() => handleStrikethrough(el)} src="assets/check-ico.svg" alt="зачеркнуть" />
 							</div>
 						</li>
 					)
