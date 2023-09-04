@@ -60,7 +60,7 @@ const ShoppingList = () => {
 			<ol className="shopping-list">
 				{shoppingList.map((el, i) => {
 					return (
-						<li className={`shopping-item ${el.strikethrough ? "strikethrough" : ""}`} key={i}>
+						<li className="shopping-item" key={i}>
 							<p className="shopping-info">{`${el.name} ${el.quantity || ""} ${el.unit || ""}`}</p>
 							<div className="shopping-actions">
 								<img className="action action-turned" onClick={e => removeFromList(e)} data-index={i} src="assets/plus-ico.svg" alt="добавить в список покупок" />
