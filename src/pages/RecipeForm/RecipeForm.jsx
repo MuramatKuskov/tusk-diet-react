@@ -157,6 +157,7 @@ const RecipeForm = () => {
 
 	const clearInputs = () => {
 		setRecipe(recipeSchema);
+		// useRef
 		document.querySelectorAll(".selected").forEach(el => el.classList.remove('selected'))
 		document.querySelector("#ingredients-0").value = "";
 		document.querySelector("#quantities-0").value = "";
