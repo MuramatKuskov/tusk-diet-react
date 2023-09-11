@@ -20,6 +20,11 @@
 
 .recipe-info-item {}
 
+.recipe-info-img {
+	width: 1em;
+	height: 1em;
+}
+
 .recipe-subtitle {
 	margin: 2em 0 0.5em;
 }
