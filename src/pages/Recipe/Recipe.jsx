@@ -36,9 +36,15 @@ const Recipe = (props) => {
 				<h2 className="recipe-title">{recipe.title.charAt(0).toUpperCase() + recipe.title.slice(1)}</h2>
 				<img className='recipe-img' src={recipe.img} />
 				<div className="recipe-info">
-					<p className="recipe-info-item">{recipe.type.join(', ')}</p>
-					<p className="recipe-info-item">Время приготовления: {recipe.time} минут</p>
-					<p className="recipe-info-item">Автор: {recipe.anonymously ? "Anon" : recipe.author}</p>
+					<div className="recipe-info-item">{recipe.type.join(', ')}</div>
+					<div className="recipe-info-item">
+						<img src="assets/clock.svg" className="recipe-info-img" />
+						{recipe.time} минут
+					</div>
+					<div className="recipe-info-item">
+						<img src="assets/user.svg" className="recipe-info-img" />
+						{recipe.anonymously ? "Anon" : recipe.author}
+					</div>
 				</div>
 				<h3 className="recipe-subtitle">Ингредиенты:</h3>
 				<ul className="recipe-ingredients">
