@@ -202,7 +202,7 @@ const RecipeForm = () => {
 							<input onChange={e => setIngredients(e, i)} className='recipe-input recipe-input-short' name='ingredients' id={`ingredients-${i}`} value={recipe.ingredients[i] ?? ""} placeholder='Ингредиенты' type='text' />
 							<input onChange={e => setQuantities(e, i)} className='recipe-input  recipe-input-short' name='quantities' id={`quantities-${i}`} value={recipe.quantities[i] ?? ""} type="number" />
 							<select onChange={e => setUnits(e, i)} className='recipe-input  recipe-input-short' name="units" value={recipe.units[i] ?? "Единицы"} id={`units-${i}`}>
-								<option className='recipe-input recipe-option' selected disabled>Единицы</option>
+								<option className='recipe-input recipe-option' disabled>Единицы</option>
 								<option className='recipe-input recipe-option' value="кг">кг</option>
 								<option className='recipe-input recipe-option' value="л">л</option>
 								<option className='recipe-input recipe-option' value="г">г</option>
