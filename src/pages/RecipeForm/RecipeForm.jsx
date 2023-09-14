@@ -85,7 +85,15 @@ const RecipeForm = () => {
 
 	const setIngredients = (e, i) => {
 		const { ingredients } = recipe;
-		ingredients[i] = e.target.value.toLowerCase();
+
+		if (e.target.value === "") {
+			ingredients.splice(i, 1);
+			recipe.quantities.splice(i, 1);
+			recipe.units.splice(i, 1);
+		} else {
+			ingredients[i] = e.target.value.toLowerCase();
+		}
+
 		setRecipe(prev => ({
 			...prev,
 			ingredients,
@@ -191,9 +199,9 @@ const RecipeForm = () => {
 					<label className='recipe-label' htmlFor="ingredients">Ингредиенты</label>
 					{[...Array(recipe.ingredients.length + 1)].map((el, i) => {
 						return (<div className='recipe-input-wrapper' key={i}>
-							<input onChange={e => setIngredients(e, i)} className='recipe-input recipe-input-short' name='ingredients' id={`ingredients-${i}`} placeholder='Ингредиенты' type='text' />
-							<input onChange={e => setQuantities(e, i)} className='recipe-input  recipe-input-short' name='quantities' id={`quantities-${i}`} type="number" />
-							<select onChange={e => setUnits(e, i)} className='recipe-input  recipe-input-short' name="units" id={`units-${i}`}>
+							<input onChange={e => setIngredients(e, i)} className='recipe-input recipe-input-short' name='ingredients' id={`ingredients-${i}`} value={recipe.ingredients[i] ?? ""} placeholder='Ингредиенты' type='text' />
+							<input onChange={e => setQuantities(e, i)} className='recipe-input  recipe-input-short' name='quantities' id={`quantities-${i}`} value={recipe.quantities[i] ?? ""} type="number" />
+							<select onChange={e => setUnits(e, i)} className='recipe-input  recipe-input-short' name="units" value={recipe.units[i] ?? "Единицы"} id={`units-${i}`}>
 								<option className='recipe-input recipe-option' selected disabled>Единицы</option>
 								<option className='recipe-input recipe-option' value="кг">кг</option>
 								<option className='recipe-input recipe-option' value="л">л</option>
