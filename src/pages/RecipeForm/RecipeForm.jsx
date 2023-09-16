@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
 import { useFetching } from '../../hooks/useFetching';
+import Button from "../../UI/Button/Button";
 import Loader from '../../UI/Loader/Loader';
 import PopUp from '../../UI/PopUp/PopUp';
 import SearchBar from '../../components/SearchBar/SearchBar';
@@ -55,7 +56,7 @@ const RecipeForm = () => {
 	}, [pushRecipe]);
 
 	useEffect(() => {
-		if (recipe.title.length > 3
+		if (recipe.title.length > 2
 			&& recipe.ingredients.length > 0
 			&& recipe.cook.length > 3
 		) {
@@ -65,13 +66,13 @@ const RecipeForm = () => {
 			})
 		}
 		return () => tg.MainButton.hide();
-	}, [recipe.title, recipe.ingredients, recipe.cook])
+	}, [recipe.title, recipe.ingredients.length, recipe.cook]);
 
 	const setTitle = newTitle => {
 		setRecipe(prev => ({
 			...prev,
 			title: newTitle
-		}));
+		}))
 	}
 
 	const setType = e => {
@@ -80,7 +81,14 @@ const RecipeForm = () => {
 			type: prev.type.includes(e.target.attributes.value.nodeValue)
 				? [...prev.type].filter(el => el != e.target.attributes.value.nodeValue)
 				: [...prev.type, e.target.attributes.value.nodeValue]
-		}));
+		}))
+	}
+
+	const setDifficulty = e => {
+		setRecipe(prev => ({
+			...prev,
+			difficulty: e.target.textContent.toLowerCase()
+		}))
 	}
 
 	const setIngredients = (e, i) => {
@@ -97,7 +105,7 @@ const RecipeForm = () => {
 		setRecipe(prev => ({
 			...prev,
 			ingredients,
-		}));
+		}))
 	}
 
 	const setQuantities = (e, i) => {
@@ -122,14 +130,21 @@ const RecipeForm = () => {
 		setRecipe(prev => ({
 			...prev,
 			cook: e.target.value
-		}));
+		}))
 	}
 
 	const setTime = e => {
 		setRecipe(prev => ({
 			...prev,
 			time: +e.target.value
-		}));
+		}))
+	}
+
+	const setOrigin = e => {
+		setRecipe(prev => ({
+			...prev,
+			origin: e.target.value
+		}))
 	}
 
 	const setLink = e => {
@@ -196,6 +211,14 @@ const RecipeForm = () => {
 					</ul>
 				</div>
 				<div className='recipe-field'>
+					<label className='recipe-label' htmlFor="difficulty">Сложность</label>
+					<div className='recipe-row'>
+						<Button type="light" callback={setDifficulty} children="Легко" />
+						<Button type="light" callback={setDifficulty} children="Средне" />
+						<Button type="light" callback={setDifficulty} children="Сложно" />
+					</div>
+				</div>
+				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="ingredients">Ингредиенты</label>
 					{[...Array(recipe.ingredients.length + 1)].map((el, i) => {
 						return (<div className='recipe-input-wrapper' key={i}>
@@ -226,6 +249,10 @@ const RecipeForm = () => {
 						минут(ы)
 					</label>
 					<input type='range' onChange={setTime} className='recipe-input' name='time' min="10" max="120" value={recipe.time} />
+				</div>
+				<div className="recipe-field">
+					<label htmlFor="origin" className="recipe-label">Страна/регион происхождения</label>
+					<input className='recipe-input' onChange={setOrigin} type="text" name='origin' id='origin' value={recipe.origin} placeholder='Происхождение' />
 				</div>
 				<div className="recipe-field">
 					<label htmlFor="link" className="recipe-label">Ссылка на источник</label>

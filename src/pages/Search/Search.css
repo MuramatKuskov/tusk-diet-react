@@ -24,7 +24,7 @@
 
 .recipes-scroll {
 	position: fixed;
-	top: 2em;
+	top: 5em;
 	left: calc(50% - 27.5px);
 	transform: translateY(-4em);
 	transition: 500ms ease-out;
@@ -33,7 +33,6 @@
 .recipes-scroll.visible {
 	transform: translateY(0);
 }
-
 
 .recipe-item {
 	display: flex;

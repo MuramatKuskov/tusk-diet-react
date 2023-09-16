@@ -2,7 +2,7 @@
 	width: fit-content;
 	margin: 0 auto;
 	font-size: 1em;
-	padding: 1em 3em;
+	padding: 0.4em 0.5em;
 	border: 2px solid var(--tg-theme-button-color);
 	border-radius: 50px;
 	transition: 500ms;
@@ -23,4 +23,20 @@
 	background-color: transparent;
 	border-width: 1px;
 	border-radius: 5px;
+}
+
+.button-light {
+	background-color: transparent;
+}
+
+@media (min-width: 375px) {
+	.button {
+		padding: 0.7em 1.5em;
+	}
+}
+
+@media (min-width: 425px) {
+	.button {
+		padding: 1em 2em;
+	}
 }

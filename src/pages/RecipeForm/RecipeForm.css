@@ -72,7 +72,7 @@
 }
 
 .recipe-dropdown:hover {
-	height: 30vh;
+	height: 120px;
 	overflow: scroll;
 	scrollbar-width: none;
 }
@@ -114,4 +114,26 @@
 	line-height: 1;
 	overflow: visible;
 	color: green;
+}
+
+.recipe-row {
+	display: flex;
+}
+
+@media (min-height: 350px) {
+	.recipe-dropdown:hover {
+		height: 160px;
+	}
+}
+
+@media (min-height: 500px) {
+	.recipe-dropdown:hover {
+		height: 35vh;
+	}
+}
+
+@media (min-width: 650px) {
+	.recipe-row {
+		padding: 0 15%;
+	}
 }

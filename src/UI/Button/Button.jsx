@@ -1,8 +1,10 @@
 import React from 'react';
 import './Button.css';
 
-const Button = ({ callback, children }) => {
-	return <button className='button' type='button' onClick={callback}>{children}</button>
+const Button = ({ type, callback, children }) => {
+	let className = "button";
+	if (type === "light") className = className + " button-light";
+	return <button className={className} type='button' onClick={callback}>{children}</button>
 };
 
 export default Button;
