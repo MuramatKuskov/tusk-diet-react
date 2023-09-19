@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useTelegram } from './hooks/useTelegram';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import Landing from './pages/Landing/Landing';
 import './App.css';
 import { PageNavContext, ShoppingListContext } from './context';
 import Index from './pages/Index/Index';
@@ -16,21 +15,48 @@ function App() {
   useEffect(() => {
     register();
     tg.ready();
-  }, [])
+    setCurrentPage(<Index />);
+  }, []);
 
   useEffect(() => {
-    let smth = true;
-    if (!smth) return
-    if (localStorage.getItem('isFirstEntry') === 'true') {
-      console.log('First Visit! Welcome!');
-      setCurrentPage(<Landing />);
-      localStorage.setItem('isFirstEntry', 'false');
-    } else {
-      console.log('Not First Visit! Still Welcome!');
-      setCurrentPage(<Index />);
+    async function getUser() {
+      let data = await fetch(process.env.REACT_APP_backURL + "/getUser?name=" + tg.initDataUnsafe?.user?.username, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      data = await data.json();
+      return data[0];
     }
-    smth = false;
-  }, [])
+
+    async function createUser() {
+      const username = tg.initDataUnsafe?.user?.username;
+      await fetch(process.env.REACT_APP_backURL + "/createUser", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username })
+      })
+    }
+
+    async function checkIfUserExists() {
+      const user = await getUser();
+      if (!user) {
+        await createUser();
+      }
+    }
+
+    if (
+      !document.cookie?.split(';')?.filter(item => {
+        return item === "isFirstVisit=false"
+      }).length
+    ) {
+      checkIfUserExists();
+      document.cookie = "isFirstVisit=false";
+    }
+  }, []);
 
   return (
     <ShoppingListContext.Provider value={{
