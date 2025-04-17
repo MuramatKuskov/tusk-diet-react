@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useTelegram } from './hooks/useTelegram';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import './App.css';
-import { PageNavContext, ShoppingListContext } from './context';
+import { PageNavContext, UserContext } from './context';
 import Index from './pages/Index/Index';
 import { register } from 'swiper/element/bundle';
 
+const tg = window.Telegram.WebApp;
+
 function App() {
-  const { tg } = useTelegram();
   const [currentPage, setCurrentPage] = useState();
-  const [shoppingList, setShoppingList] = useState([]);
+  const [user, setUser] = useState(tg.initDataUnsafe?.user);
 
   useEffect(() => {
     register();
@@ -20,7 +20,7 @@ function App() {
 
   useEffect(() => {
     async function getUser() {
-      let data = await fetch(process.env.REACT_APP_backURL + "/getUser?name=" + tg.initDataUnsafe?.user?.username, {
+      let data = await fetch(process.env.REACT_APP_backURL + "/getUser?name=" + user.username, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -31,49 +31,49 @@ function App() {
     }
 
     async function createUser() {
-      const username = tg.initDataUnsafe?.user?.username;
       await fetch(process.env.REACT_APP_backURL + "/createUser", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username })
+        body: JSON.stringify({ user })
       })
     }
 
     async function checkIfUserExists() {
-      const user = await getUser();
-      if (!user) {
-        await createUser();
+      const fetchUser = await getUser();
+      if (fetchUser) {
+        return setUser(fetchUser);
       }
+      return createUser();
     }
 
-    if (
+    /* if (
       !document.cookie?.split(';')?.filter(item => {
         return item === "isFirstVisit=false"
       }).length
     ) {
-      checkIfUserExists();
-      document.cookie = "isFirstVisit=false";
-    }
+      
+    } */
+    checkIfUserExists();
+    // document.cookie = "isFirstVisit=false";
   }, []);
 
   return (
-    <ShoppingListContext.Provider value={{
-      shoppingList,
-      setShoppingList
+    <PageNavContext.Provider value={{
+      currentPage,
+      setCurrentPage
     }}>
-      <PageNavContext.Provider value={{
-        currentPage,
-        setCurrentPage
+      <UserContext.Provider value={{
+        user, setUser
       }}>
         <div className='app'>
           <Header />
           {currentPage}
           <Footer />
         </div>
-      </PageNavContext.Provider>
-    </ShoppingListContext.Provider>
+      </UserContext.Provider>
+    </PageNavContext.Provider>
   );
 }
 

@@ -32,23 +32,23 @@ const Tiles = () => {
 			breakpoints: {
 				320: {
 					slidesPerView: 2,
-					spaceBetween: 20
+					// spaceBetween: 20
 				},
 				375: {
 					slidesPerView: 2,
 				},
 				425: {
 					slidesPerView: 2,
-					spaceBetween: 30,
+					// spaceBetween: 30,
 				},
 				769: {
 					slidesPerView: 3,
-					spaceBetween: 30,
+					// spaceBetween: 30,
 					grabCursor: true,
 				},
 				1024: {
 					slidesPerView: 4,
-					spaceBetween: 30,
+					// spaceBetween: 30,
 					grabCursor: true
 				}
 			}
@@ -68,7 +68,9 @@ const Tiles = () => {
 					return (
 						<swiper-slide key={index}>
 							<div onClick={handleClick} data={el.data} className="tiles-item" key={index}>
-								<p className="tiles-label">{el.label}</p>
+								<div className='tiles-overlay'>
+									<p className="tiles-label">{el.label}</p>
+								</div>
 								<img className='tiles-img' src={el.src} alt={el.label} loading='lazy' />
 							</div>
 						</swiper-slide>

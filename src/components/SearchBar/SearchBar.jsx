@@ -23,6 +23,7 @@ const SearchBar = forwardRef(({ setTitle, placeholder, value }, ref) => {
 		return data;
 	});
 
+	// debounce search
 	useEffect(() => {
 		if (setTitle) setTitle(searchQuery.title);
 		if (searchQuery?.title?.length < 1) return;

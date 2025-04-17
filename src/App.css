@@ -1,54 +1,21 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@import "reset.css";
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #444 #88888815;
 }
 
-*, *:before, *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+body::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 10px;
 }
 
-html, body {
-  position: relative;
-  height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
-  line-height: 1;
-  scrollbar-width: none;
-  overflow: -moz-scrollbar-none;
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
 }
 
-body::-webkit-scrollbar {
-  display: none;
-}
-
-input, button, textarea {
-  font-family: inherit;
-}
-
-/* В эксплорере убирает крестик в поле ввода */
-input::-ms-clear- {
-  display: none;
-}
-
-button {
-  cursor: pointer;
-}
-
-/* В фаерфоксе убирает лишние отступы в кнопках */
-button-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
-
-ul li {
-  list-style: none;
-}
-
-img {
-  vertical-align: top;
+body::-webkit-scrollbar-track {
+  background-color: #88888815;
 }
 
 #root {
@@ -77,6 +44,7 @@ img {
 }
 
 .page {
+  position: relative;
   flex: 1 0 auto;
   padding: 2em 1.5em;
   background-color: var(--tg-theme-bg-color);
@@ -84,4 +52,119 @@ img {
 
 .title {
   text-align: center;
+}
+
+.control {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  transition: 500ms;
+}
+
+.control.added {
+  transform: rotateZ(45deg);
+}
+
+.control:hover {
+  cursor: pointer;
+}
+
+.control-turned {
+  transform: rotateZ(45deg);
+}
+
+.SelectTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0 15px;
+  font-size: 13px;
+  line-height: 1;
+  height: 35px;
+  gap: 5px;
+  background-color: #1d1d1d;
+  color: white;
+  box-shadow: 0 2px 10px #1d1d1d;
+}
+
+.SelectTrigger:focus {
+  box-shadow: 0 0 0 2px black;
+}
+
+.SelectTrigger[data-placeholder] {
+  color: darkslateblue;
+}
+
+.SelectIcon {
+  color: darkslateblue;
+}
+
+.SelectContent {
+  overflow: hidden;
+  background-color: #020202ef;
+  border-radius: 6px;
+  box-shadow:
+    0px 10px 38px -10px rgba(22, 23, 24, 0.35),
+    0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+}
+
+.SelectViewport {
+  padding: 5px;
+}
+
+.SelectItem {
+  font-size: 13px;
+  line-height: 1;
+  color: var(--tg-theme-link-color);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  height: 25px;
+  padding: 0 35px 0 25px;
+  position: relative;
+  user-select: none;
+}
+
+.SelectItem:hover {
+  background-color: #1d1d1d;
+}
+
+.SelectLabel {
+  padding: 0 25px;
+  font-size: 12px;
+  line-height: 25px;
+  color: var(--tg-theme-link-color);
+}
+
+.SelectSeparator {
+  height: 1px;
+  background-color: var(--tg-theme-link-color);
+  margin: 5px;
+}
+
+.SelectItemIndicator {
+  position: absolute;
+  left: 3px;
+  width: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.SelectItemIndicator img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: hue-rotate(35deg);
+}
+
+.SelectScrollButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25px;
+  background-color: white;
+  color: var(--tg-theme-link-color);
+  cursor: default;
 }

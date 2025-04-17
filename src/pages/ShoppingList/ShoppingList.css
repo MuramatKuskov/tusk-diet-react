@@ -9,29 +9,52 @@
 }
 
 .shopping-list {
-	max-width: 300px;
+	margin: 2em 0 3em 0;
 }
 
 .shopping-item {
 	display: flex;
-	padding: 0.3em 0;
+	padding: 0.5em 0;
+}
+
+.shopping-info {
+	display: flex;
+	flex: 1 1 100%;
+	justify-content: space-between;
+	padding-right: 2em;
+}
+
+.shopping-measures {
+	display: flex;
+	gap: 0.5em;
+}
+
+.shopping-quantity {
+	width: 4em;
+	padding: 0.2em 0 0 0.2em;
 }
 
 .shopping-item.strikethrough > .shopping-info {
 	text-decoration: line-through;
 }
 
-.shopping-info {
-	flex: 0 1 100%
-}
-
-.shopping-actions {
+.shopping-actions, .shopping-controls {
 	display: flex;
 	gap: 1em;
 }
 
-.action {}
+.shopping input, .shopping select {
+	color: var(--tg-theme-text-color);
+	background: transparent;
+	border-radius: 0.2em;
+}
 
-.action-turned {
-	transform: rotateZ(45deg);
+.shopping option {
+	background: var(--tg-theme-bg-color);
+}
+
+@media (min-width: 425px) {
+	.shopping-info {
+		padding: 0 1.5em 0 2em;
+	}
 }

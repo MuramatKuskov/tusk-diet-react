@@ -1,10 +1,23 @@
-import React, { useContext } from 'react';
-import { ShoppingListContext } from '../../context';
+import React, { useEffect, useState } from 'react';
 import './Recipe.css';
 
+const tg = window.Telegram.WebApp;
+
 const Recipe = (props) => {
-	const { shoppingList, setShoppingList } = useContext(ShoppingListContext);
+	const [shoppingList, setShoppingList] = useState([]);
 	const { recipe } = props;
+
+	useEffect(() => {
+		tg.CloudStorage.getItem('shoppingList', (err, data) => {
+			if (err) {
+				console.log(err);
+				return;
+			}
+
+			const parsedData = JSON.parse(data);
+			setShoppingList(parsedData);
+		});
+	}, []);
 
 	function handleList(e) {
 		const index = e.target.dataset.index;
@@ -14,27 +27,41 @@ const Recipe = (props) => {
 	}
 
 	function addToList(i) {
-		setShoppingList(prev => [
-			...prev,
-			{
-				name: recipe.ingredients[i],
-				quantity: recipe.quantities[i],
-				unit: recipe.units[i]
+		const updatedList = [...shoppingList, {
+			name: recipe.ingredients[i],
+			quantity: recipe.quantities[i],
+			unit: recipe.units[i]
+		}];
+
+		tg.CloudStorage.setItem('shoppingList', JSON.stringify(updatedList), (err, result) => {
+			if (err) {
+				console.log(err);
+				return;
 			}
-		]);
+			setShoppingList(updatedList);
+		});
 	}
 
 	function removeFromList(i) {
-		setShoppingList(prev => [
-			...prev.filter(el => el.name != recipe.ingredients[i])
-		]);
+		const filteredList = shoppingList.filter(el => el.name != recipe.ingredients[i]);
+
+		tg.CloudStorage.setItem('shoppingList', JSON.stringify(filteredList), (err, result) => {
+			if (err) {
+				console.log(err);
+				return;
+			}
+
+			setShoppingList(filteredList);
+		});
 	}
 
 	return (
 		<div className='page page-recipe'>
 			<div className="recipe">
 				<h2 className="recipe-title">{recipe.title.charAt(0).toUpperCase() + recipe.title.slice(1)}</h2>
-				<img className='recipe-img' src={recipe.img} />
+				<div className="recipe-img">
+					<img src={recipe.img} />
+				</div>
 				<div className="recipe-info">
 					<div className="recipe-info-item">{recipe.type.join(', ')}</div>
 					<div className="recipe-info-item">
@@ -42,7 +69,7 @@ const Recipe = (props) => {
 						{recipe.time} минут
 					</div>
 					<div className="recipe-info-item">
-						<img src="assets/user.svg" className="recipe-info-img" />
+						<img src="assets/person.svg" className="recipe-info-img" />
 						{recipe.anonymously ? "Anon" : recipe.author}
 					</div>
 				</div>
@@ -54,8 +81,8 @@ const Recipe = (props) => {
 								<p className="ingredient-info">
 									{`${el.charAt(0).toUpperCase()}${el.slice(1)} ${recipe.quantities[i] || ""} ${recipe.units[i] || ""}`}
 								</p>
-								<div className="ingredient-actions">
-									<img className={`action ${shoppingList.find(li => li.name === el) ? "added" : ""}`} onClick={e => handleList(e)} data-index={i} src="assets/plus-ico.svg" alt="добавить в список покупок" />
+								<div className="ingredient-controls">
+									<img className={`control ${shoppingList.find(li => li.name === el) ? "added" : ""}`} onClick={e => handleList(e)} data-index={i} src="assets/plus-ico.svg" alt="добавить в список покупок" />
 								</div>
 							</li>
 						)
