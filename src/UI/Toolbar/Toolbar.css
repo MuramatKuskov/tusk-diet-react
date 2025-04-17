@@ -1,0 +1,142 @@
+.ToolbarRoot {
+	display: flex;
+	width: 100%;
+}
+
+.ToolbarToggleItem {
+	flex: 0 0 auto;
+	height: 25px;
+	padding: 0 5px;
+	border-radius: 4px;
+	display: inline-flex;
+	font-size: 13px;
+	line-height: 1;
+	align-items: center;
+	justify-content: center;
+}
+
+.ToolbarToggleItem:hover {
+	background-color: var(--tg-theme-link-color);
+	filter: brightness(0.8);
+}
+
+.ToolbarToggleItem:focus {
+	position: relative;
+	box-shadow: 0 0 0 2px var(--tg-theme-hint-color);
+}
+
+.ToolbarToggleItem {
+	background-color: #1d1d1d;
+	margin-left: 0.5em;
+}
+
+.ToolbarToggleItem:first-child {
+	margin-left: 0;
+}
+
+.ToolbarToggleItem[aria-checked="true"],
+.ToolbarToggleItem[aria-pressed="true"] {
+	background-color: var(--tg-theme-button-color);
+}
+
+.ToolbarSeparator {
+	width: 1px;
+	background-color: #ababab;
+	margin: 0 0.25em;
+}
+
+.TooltipContent {
+	border-radius: 4px;
+	padding: 10px 15px;
+	font-size: 15px;
+	line-height: 1;
+	color: var(--tg-theme-hint-color);
+	background-color: #1d1d1d;
+	box-shadow:
+		hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+		hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+	user-select: none;
+	animation-duration: 400ms;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	will-change: transform, opacity;
+}
+
+.TooltipContent[data-state="delayed-open"][data-side="top"] {
+	animation-name: slideDownAndFade;
+}
+
+.TooltipContent[data-state="delayed-open"][data-side="right"] {
+	animation-name: slideLeftAndFade;
+}
+
+.TooltipContent[data-state="delayed-open"][data-side="bottom"] {
+	animation-name: slideUpAndFade;
+}
+
+.TooltipContent[data-state="delayed-open"][data-side="left"] {
+	animation-name: slideRightAndFade;
+}
+
+.TooltipArrow {
+	fill: white;
+}
+
+@keyframes slideUpAndFade {
+	from {
+		opacity: 0;
+		transform: translateY(2px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideRightAndFade {
+	from {
+		opacity: 0;
+		transform: translateX(-2px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideDownAndFade {
+	from {
+		opacity: 0;
+		transform: translateY(-2px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideLeftAndFade {
+	from {
+		opacity: 0;
+		transform: translateX(2px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@media (min-width: 375px) {
+	.ToolbarSeparator {
+		margin: 0 0.5em;
+	}
+}
+
+@media (min-width: 425px) {
+	.ToolbarSeparator {
+		margin: 0 1em;
+	}
+}

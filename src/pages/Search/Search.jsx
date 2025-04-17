@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import * as Select from "@radix-ui/react-select";
 import './Search.css';
 import { useFetching } from '../../hooks/useFetching';
 import Loader from '../../UI/Loader/Loader';
@@ -6,30 +7,26 @@ import PopUp from '../../UI/PopUp/PopUp';
 import { PageNavContext } from '../../context';
 import Recipe from '../Recipe/Recipe';
 import SearchBar from '../../components/SearchBar/SearchBar';
-import Button from '../../UI/Button/Button';
+import CumulativeItems from '../../UI/CumulativeItems/CumulativeItems';
+import Toolbar from '../../UI/Toolbar/Toolbar';
 
 const Search = (props) => {
-	const [recipes, setRecipes] = useState([]);
-	const defaultQuery = { skip: 0, limit: 9, type: props?.query?.type || "all" }
-	const [query, setQuery] = useState(props.query || {});
-	// отдельный стейт нужен, потому что он будет изменяться после fetch
-	// а fetch зависим от query
-	const [skip, setSkip] = useState(0);
 	const { currentPage, setCurrentPage } = useContext(PageNavContext);
+	const [recipes, setRecipes] = useState([]);
+	const [skip, setSkip] = useState(0);
+	const defaultQuery = { mode: "discovery", type: props?.query?.type || "all", skip: 0, limit: 9, }
+	const [query, setQuery] = useState(defaultQuery);
+	const [moreDataOnServer, setMoreDataOnServer] = useState(true);
 	const scrollObserver = useRef();
 	const scrollAnchor = useRef();
 	const scrollBtn = useRef();
 	const titleInput = useRef();
-	const ingredientsInput = useRef();
-	const typeInput = useRef();
 	const lastElement = useRef();
 	const lastElementObserver = useRef();
 
 	const [fetchRecipes, isFetching, fetchError, setFetchError] = useFetching(async signal => {
 		const url = new URL(process.env.REACT_APP_backURL + "/getRecipes");
-		query.skip = skip;
-		query.limit = 9;
-		url.search = new URLSearchParams(query);
+		url.search = new URLSearchParams({ ...query, skip });
 		let data = await fetch(url.toString(), {
 			method: 'GET',
 			headers: {
@@ -38,16 +35,27 @@ const Search = (props) => {
 			signal,
 		});
 		data = await data.json();
-		setRecipes([...recipes, ...data]);
-		setSkip(skip + 9);
+
+		if (!data.length || data.length < 9) setMoreDataOnServer(false);
+
+		skip === 0 ? setRecipes(data) : setRecipes(prev => [...prev, ...data]);
+		setSkip(prev => prev + 9);
 	});
 
+	// scrollObserver init
 	useEffect(() => {
-		if (props.query.type) {
-			typeInput.current.value = props.query.type;
-		}
+		scrollObserver.current = new IntersectionObserver(entries => {
+			if (!entries[0].isIntersecting) {
+				scrollBtn.current.classList.add('visible');
+			} else {
+				scrollBtn.current.classList.remove('visible');
+			}
+		})
+		scrollObserver.current.observe(scrollAnchor.current);
+		return () => scrollObserver.current.disconnect();
 	}, [])
 
+	// fetch recipes on page load
 	useEffect(() => {
 		let ignore = false;
 		let timer;
@@ -56,7 +64,7 @@ const Search = (props) => {
 		async function startFetching() {
 			try {
 				if (ignore) return;
-				fetchRecipes();
+				fetchRecipes(abortController.signal);
 			} catch (error) {
 				if (error.name === 'AbortError') {
 					console.log('AbortError');
@@ -78,11 +86,17 @@ const Search = (props) => {
 		}
 	}, []);
 
+	// fetch recipes on query change
+	useEffect(() => {
+		fetchRecipes();
+	}, [query]);
+
+	// observe last element
 	useEffect(() => {
 		if (isFetching) return;
 		if (lastElementObserver.current) lastElementObserver.current.disconnect();
 		let callback = function (entries, observer) {
-			if (entries[0].isIntersecting) {
+			if (entries[0].isIntersecting && moreDataOnServer && !isFetching) {
 				fetchRecipes();
 			}
 		}
@@ -94,116 +108,84 @@ const Search = (props) => {
 		return () => lastElementObserver.current.disconnect();
 	}, [isFetching]);
 
-	useEffect(() => {
-		scrollObserver.current = new IntersectionObserver(entries => {
-			if (!entries[0].isIntersecting) {
-				scrollBtn.current.classList.add('visible');
-			} else {
-				scrollBtn.current.classList.remove('visible');
-			}
-		})
-		scrollObserver.current.observe(scrollAnchor.current);
-		return () => scrollObserver.current.disconnect();
-	}, [])
+	function updateQuery(update) {
+		setSkip(0);
+		setMoreDataOnServer(true);
+		setQuery(prev => ({
+			...prev,
+			...update
+		}));
+	}
 
-	useEffect(() => {
-		fetchRecipes()
-	}, [query]);
-
-	const setTitle = newTitle => {
+	const setTitle = title => {
+		setSkip(0);
+		setMoreDataOnServer(true);
 		setQuery(prev => {
-			if (!newTitle) {
+			// clear param if empty
+			if (!title) {
 				const { title, ...rest } = prev;
 				return rest;
 			}
+			// set param
 			return {
 				...prev,
-				title: newTitle
+				title: title
 			}
 		});
 	}
 
-	const setType = newType => {
-		if (!newType.length) return
+	const addIngredient = ingredient => {
+		setSkip(0);
+		setMoreDataOnServer(true);
 		setQuery(prev => ({
 			...prev,
-			type: newType//e.target.selectedOptions[0].value
+			ingredients: prev.ingredients ? [...prev.ingredients, ingredient.toLowerCase()] : [ingredient.toLowerCase()]
 		}));
 	}
 
-	const setIngredients = newValue => {
-		setQuery(prev => {
-			if (!newValue.length) {
-				const { ingredients, ...rest } = prev;
-				return rest;
-			}
-			return {
-				...prev,
-				ingredients: newValue.split(',').map(el => {
-					return el.trim(); //.toLowerCase()
-				})
-			}
-		})
-	}
-
-	const appendFilters = () => {
-		// выполинть, если хотя бы 1 из полей не инициализировано, или
-		// значение состояния отличается от значения инпута
-		if (
-			(!query.title || query.title != titleInput.current.value)
-			||
-			(!query.ingredients || query.ingredients != ingredientsInput.current.value)
-			||
-			(!query.type || query.type != typeInput.current.value)
-		) {
-			setSkip(0);
-			setRecipes([]);
-			if (query.title != titleInput.current.value) setTitle(titleInput.current.value.toLowerCase());
-			if (query.ingredients != ingredientsInput.current.value) setIngredients(ingredientsInput.current.value.toLowerCase());
-			if (query.type != typeInput.current.value && typeInput.current.value != 'Тип') setType(typeInput.current.value);
-		}
+	const removeIngredient = index => {
+		setSkip(0);
+		setMoreDataOnServer(true);
+		setQuery(prev => ({
+			...prev,
+			ingredients: prev.ingredients.toSpliced(index, 1)
+		}));
 	}
 
 	return (
 		<div className='page page-search'>
 			<div className="filters" ref={scrollAnchor}>
-				<SearchBar ref={titleInput} /* setTitle={setTitle} */ placeholder="Название" />
-				<input className='filters-input' ref={ingredientsInput} /* onChange={setIngredients} */ type="text" name="ingredients" id="ingredients" placeholder='Ингредиенты' />
-				<select className='filters-input' ref={typeInput} /* onChange={setType} */ name="type" id="type-select" /* value={query.type} */>
-					<option className='filters-option' selected disabled>Тип</option>
-					<option className='filters-option' value="all">Все</option>
-					<option className='filters-option' value="breakfast">Завтраки</option>
-					<option className='filters-option' value="main">Основные блюда</option>
-					<option className='filters-option' value="garnish">Гарниры</option>
-					<option className='filters-option' value="soup">Супы</option>
-					<option className='filters-option' value="snack">Закуски</option>
-					<option className='filters-option' value="salad">Салаты</option>
-					<option className='filters-option' value="bakery">Выпечка</option>
-					<option className='filters-option' value="dessert">Дессерты</option>
-					<option className='filters-option' value="drink">Напитки</option>
-					<option className='filters-option' value="sauce">Соусы</option>
-					<option className='filters-option' value="other">Другое</option>
-				</select>
-				<Button callback={appendFilters}>Применить</Button>
+				<SearchBar ref={titleInput} setTitle={setTitle} placeholder="Название" />
+				<Toolbar updateQuery={updateQuery} query={query} />
+				<div className="filters-ingredients">
+					<h3 className="filters-title title">Ingredients</h3>
+					<CumulativeItems items={query.ingredients} actions={{ addItem: addIngredient, removeItem: removeIngredient }} />
+				</div>
 			</div>
 			<div className='recipes'>
+				{!recipes.length && !isFetching && <h3 className='no-results'>Рецепты не найдены</h3>}
 				<button className="recipes-scroll button button-ghost" type='button' onClick={() => scrollAnchor.current.scrollIntoView({ behavior: "smooth" })} ref={scrollBtn}>Наверх</button>
 				{recipes.map((recipe, i) => (
 					// ласт элементу прикручиваем ref
 					i == recipes.length - 1 ?
 						<div onClick={() => { setCurrentPage(<Recipe recipe={recipes[i]} />) }} key={i} className='recipe-item' ref={lastElement}>
-							<img className='recipe-item-img' src={recipe.img} alt='изображение' loading='lazy' />
+							<div className='recipe-item-img'>
+								<img src={recipe.img} alt='изображение' loading='lazy' />
+							</div>
 							<p className="recipe-item-title">{recipe.title.charAt(0).toUpperCase() + recipe.title.slice(1)}</p>
 						</div>
 						:
 						<div onClick={() => { setCurrentPage(<Recipe recipe={recipes[i]} />) }} key={i} className='recipe-item'>
-							<img className='recipe-item-img' src={recipe.img} alt='изображение' loading='lazy' />
+							<div className='recipe-item-img'>
+								<img src={recipe.img} alt='изображение' loading='lazy' />
+							</div>
 							<p className="recipe-item-title">{recipe.title.charAt(0).toUpperCase() + recipe.title.slice(1)}</p>
 						</div>
 				))}
+				{(isFetching /* && Object.values(props.query).some(value => value.length) */ && !recipes.length) && <Loader />}
 			</div>
 			{fetchError && <PopUp text={fetchError} callback={() => setFetchError('')} />}
-			{(isFetching && !recipes.length) && <Loader />}
+			{/* show loader only when params specified && !recipes on page */}
 		</div >
 	);
 };

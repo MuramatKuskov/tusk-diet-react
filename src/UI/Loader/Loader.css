@@ -7,15 +7,17 @@
 }
 
 .loader-wrapper {
-	position: fixed;
-	width: 100vw;
-	height: 100vh;
+	position: absolute;
+	/* width: 100vw; */
+	/* height: 100vh; */
 	top: 0;
 	left: 0;
+	right: 0;
+	bottom: 0;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(124, 124, 124, 0.568);
+	background-color: rgba(100, 100, 100, 0.5);
 	z-index: 9999999;
 }
 

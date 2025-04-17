@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useTelegram } from '../../hooks/useTelegram';
 import './RecipeForm.css';
 import { useFetching } from '../../hooks/useFetching';
 import Button from "../../UI/Button/Button";
@@ -8,30 +7,28 @@ import PopUp from '../../UI/PopUp/PopUp';
 import SearchBar from '../../components/SearchBar/SearchBar';
 
 const backURL = process.env.REACT_APP_backURL;
+const tg = window.Telegram.WebApp;
+
+const recipeSchema = {
+	img: "#",
+	title: "",
+	origin: "",
+	type: [],
+	ingredients: [],
+	quantities: [],
+	units: [],
+	cook: "",
+	difficulty: "",
+	time: 10,
+	rating: null,
+	ratingIterator: 0,
+	link: "",
+	author: tg.initDataUnsafe?.user?.username || "Muramat_Kuskov",
+	anonymously: false,
+	moderating: true
+}
 
 const RecipeForm = () => {
-	// Работает только из Телеграма
-	const { tg, queryId } = useTelegram();
-
-	const recipeSchema = {
-		img: "#",
-		title: "",
-		origin: "",
-		type: [],
-		ingredients: [],
-		quantities: [],
-		units: [],
-		cook: "",
-		difficulty: "",
-		time: 10,
-		rating: null,
-		ratingIterator: 0,
-		link: "",
-		author: tg.initDataUnsafe?.user?.username || "Muramat_Kuskov",
-		anonymously: false,
-		moderating: true
-	}
-
 	const [recipe, setRecipe] = useState(recipeSchema);
 	const [pushResult, setPushResult] = useState('');
 
@@ -41,13 +38,14 @@ const RecipeForm = () => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ queryId, recipe }) // queryID работает только из Телеграма
+			body: JSON.stringify({ queryId: tg.initDataUnsafe.queryId, recipe })
 		})
 			.then(res => {
 				handleResponse(res);
 			});
 	});
 
+	// tg MainButton event handler
 	useEffect(() => {
 		tg.onEvent('mainButtonClicked', pushRecipe)
 		return () => {
@@ -55,6 +53,7 @@ const RecipeForm = () => {
 		}
 	}, [pushRecipe]);
 
+	// tg MainButton appearance
 	useEffect(() => {
 		if (recipe.title.length > 2
 			&& recipe.ingredients.length > 0
@@ -94,6 +93,7 @@ const RecipeForm = () => {
 	const setIngredients = (e, i) => {
 		const { ingredients } = recipe;
 
+		// remove input if it's empty
 		if (e.target.value === "") {
 			ingredients.splice(i, 1);
 			recipe.quantities.splice(i, 1);
@@ -168,6 +168,7 @@ const RecipeForm = () => {
 		}))
 	}
 
+	// select dish type from dropdown
 	const handleSelect = e => {
 		e.target.classList.toggle("selected");
 		setType(e);
@@ -213,9 +214,9 @@ const RecipeForm = () => {
 				<div className='recipe-field'>
 					<label className='recipe-label' htmlFor="difficulty">Сложность</label>
 					<div className='recipe-row'>
-						<Button type="light" callback={setDifficulty} children="Легко" />
-						<Button type="light" callback={setDifficulty} children="Средне" />
-						<Button type="light" callback={setDifficulty} children="Сложно" />
+						<Button type="light" callback={setDifficulty} text="Легко" />
+						<Button type="light" callback={setDifficulty} text="Средне" />
+						<Button type="light" callback={setDifficulty} text="Сложно" />
 					</div>
 				</div>
 				<div className='recipe-field'>

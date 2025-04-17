@@ -1,0 +1,30 @@
+.suggestions {
+	max-width: 100%;
+	overflow: hidden;
+	margin-top: 2em;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+}
+
+.suggestions .recipes {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 1em;
+	margin: 0;
+	padding: 1em;
+	height: 35vh;
+}
+
+.suggestions .recipe-item {
+	flex: 0 0 45%;
+	max-width: 80vw;
+	height: 100%;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	line-clamp: 4;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+}
