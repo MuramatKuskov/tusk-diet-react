@@ -110,13 +110,11 @@ const ShoppingList = () => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ queryId: tg.initDataUnsafe.queryId, shoppingList })
+			body: JSON.stringify({ query_id: tg.initDataUnsafe.query_id, shoppingList })
 		})
 			.then(res => {
-				if (res.status === 200) {
-					tg.showPopup({ title: "Успех", message: "Список покупок сохранен" })
-				} else {
-					tg.showPopup({ title: "Ошибка", message: res.status + ": " + res.message })
+				if (res.status !== 200) {
+					tg.showAlert(res.status + ": " + res.message);
 				}
 			});
 	});

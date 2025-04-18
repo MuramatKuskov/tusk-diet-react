@@ -26,7 +26,18 @@ const TypeSelect = ({ selectedType, updateQuery }) => {
 									<img src="assets/check-ico.svg" alt="icon" />
 								</Select.ItemIndicator>
 							</Select.Item>
-							<Select.Item value="main" className="SelectItem">Основные блюда</Select.Item>
+							<Select.Item value="breakfast" className="SelectItem">
+								<Select.ItemText>Завтраки</Select.ItemText>
+								<Select.ItemIndicator className="SelectItemIndicator">
+									<img src="assets/check-ico.svg" alt="icon" />
+								</Select.ItemIndicator>
+							</Select.Item>
+							<Select.Item value="main" className="SelectItem">
+								<Select.ItemText>Основные блюда</Select.ItemText>
+								<Select.ItemIndicator className="SelectItemIndicator">
+									<img src="assets/check-ico.svg" alt="icon" />
+								</Select.ItemIndicator>
+							</Select.Item>
 							<Select.Item value="garnish" className="SelectItem">
 								<Select.ItemText>Гарниры</Select.ItemText>
 								<Select.ItemIndicator className="SelectItemIndicator">

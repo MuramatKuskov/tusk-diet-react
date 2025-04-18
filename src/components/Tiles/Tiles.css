@@ -13,7 +13,6 @@
 	transition: 500ms;
 
 	&:hover {
-		transform: scale(1.05);
 		cursor: pointer;
 
 		& .tiles-overlay {
@@ -44,6 +43,7 @@
 	background-color: rgba(41, 41, 41, 0.7);
 	transition: 250ms ease-out;
 	pointer-events: none;
+	user-select: none;
 }
 
 .tiles-label {
@@ -57,32 +57,5 @@
 @media (min-width: 425px) {
 	.tiles-item:hover .tiles-label {
 		transform: translateY(600%);
-
 	}
 }
-
-/* 
-@media (min-width: 481px) {
-	.tiles-img {
-		width: 35vw;
-		max-width: 200px;
-	}
-} */
-
-/* @media (min-width: 640px) {
-	.tiles {
-		padding: 10px 10% 10px;
-	}
-} */
-
-/* @media (min-width: 769px) {
-	.tiles-img {
-		width: 170px;
-	}
-}
-
-@media (min-width: 1440px) {
-	.tiles {
-		padding: 10px 20vw 10px;
-	}
-} */
