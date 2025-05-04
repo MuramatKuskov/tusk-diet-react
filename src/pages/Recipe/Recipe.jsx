@@ -9,7 +9,7 @@ const Recipe = (props) => {
 	const [recipe, setRecipe] = useState(props.recipe);
 
 	const [fetchRecipe, isFetching, fetchError, setFetchError] = useFetching(async signal => {
-		const url = new URL(/* process.env.REACT_APP_backURL */ "https://wpgxkhrh-8080.euw.devtunnels.ms" + "/getRecipe?id=" + props.recipe._id);
+		const url = new URL(process.env.REACT_APP_backURL + "/getRecipe?id=" + props.recipe._id);
 		let data = await fetch(url.toString(), {
 			method: 'GET',
 			headers: {
