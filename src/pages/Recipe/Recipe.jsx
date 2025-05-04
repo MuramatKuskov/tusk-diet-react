@@ -1,13 +1,68 @@
 import React, { useEffect, useState } from 'react';
 import './Recipe.css';
+import { useFetching } from '../../hooks/useFetching';
 
 const tg = window.Telegram.WebApp;
 
 const Recipe = (props) => {
 	const [shoppingList, setShoppingList] = useState([]);
-	const { recipe } = props;
+	const [recipe, setRecipe] = useState(props.recipe);
+
+	const [fetchRecipe, isFetching, fetchError, setFetchError] = useFetching(async signal => {
+		const url = new URL(/* process.env.REACT_APP_backURL */ "https://wpgxkhrh-8080.euw.devtunnels.ms" + "/getRecipe?id=" + props.recipe._id);
+		let data = await fetch(url.toString(), {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			signal,
+		});
+		data = await data.json();
+
+		if (!data) {
+			setFetchError("Рецепт не найден");
+			return;
+		} else {
+			setRecipe(prev => ({ ...prev, ...data[0] }));
+		}
+	});
+
+	const [sendToChat, isSending, sendingError] = useFetching(async () => {
+		await fetch(process.env.REACT_APP_backURL + "/sendRecipeMsg", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ query_id: tg.initDataUnsafe.query_id, recipe })
+		})
+			.then(res => {
+				if (res.status !== 200) {
+					tg.showAlert(res.status + ": " + res.message);
+				}
+			});
+	});
+
+	// handle tg main button appearance
+	useEffect(() => {
+		if (recipe.cook) {
+			tg.MainButton.setParams({
+				text: 'Отправить покупки в чат с ботом'
+			});
+			tg.MainButton.show();
+		}
+		return () => tg.MainButton.hide();
+	}, [recipe])
+
+	// handle tg main button click
+	useEffect(() => {
+		tg.onEvent('mainButtonClicked', sendToChat)
+		return () => {
+			tg.offEvent('mainButtonClicked', sendToChat)
+		}
+	}, [sendToChat]);
 
 	useEffect(() => {
+		fetchRecipe();
 		tg.CloudStorage.getItem('shoppingList', (err, data) => {
 			if (err) {
 				console.log(err);
@@ -28,9 +83,9 @@ const Recipe = (props) => {
 
 	function addToList(i) {
 		const updatedList = [...shoppingList, {
-			name: recipe.ingredients[i],
-			quantity: recipe.quantities[i],
-			unit: recipe.units[i]
+			name: props.recipe.ingredients[i],
+			quantity: props.recipe.quantities[i],
+			unit: props.recipe.units[i]
 		}];
 
 		tg.CloudStorage.setItem('shoppingList', JSON.stringify(updatedList), (err, result) => {
@@ -43,7 +98,7 @@ const Recipe = (props) => {
 	}
 
 	function removeFromList(i) {
-		const filteredList = shoppingList.filter(el => el.name != recipe.ingredients[i]);
+		const filteredList = shoppingList.filter(el => el.name != props.recipe.ingredients[i]);
 
 		tg.CloudStorage.setItem('shoppingList', JSON.stringify(filteredList), (err, result) => {
 			if (err) {
@@ -70,7 +125,7 @@ const Recipe = (props) => {
 					</div>
 					<div className="recipe-info-item">
 						<img src="assets/person.svg" className="recipe-info-img" />
-						{recipe.anonymously ? "Anon" : recipe.author}
+						<span className="recipe-author">{recipe.author}</span>
 					</div>
 				</div>
 				<h3 className="recipe-subtitle">Ингредиенты:</h3>
@@ -79,7 +134,7 @@ const Recipe = (props) => {
 						return (
 							<li className="recipe-ingredient" key={i}>
 								<p className="ingredient-info">
-									{`${el.charAt(0).toUpperCase()}${el.slice(1)} ${recipe.quantities[i] || ""} ${recipe.units[i] || ""}`}
+									{`${el.charAt(0).toUpperCase()}${el.slice(1)} ${recipe.quantities?.[i] || ""} ${recipe.units?.[i] || ""}`}
 								</p>
 								<div className="ingredient-controls">
 									<img className={`control ${shoppingList.find(li => li.name === el) ? "added" : ""}`} onClick={e => handleList(e)} data-index={i} src="assets/plus-ico.svg" alt="добавить в список покупок" />
@@ -89,7 +144,7 @@ const Recipe = (props) => {
 					})}
 				</ul>
 				<h3 className="recipe-subtitle">Приготовление:</h3>
-				{recipe.cook.split('\n').map((el, i) => {
+				{recipe.cook?.split('\n').map((el, i) => {
 					return <p className='recipe-cook' key={i}>{el}</p>
 				})}
 				{recipe.link &&

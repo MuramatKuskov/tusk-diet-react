@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './RecipeForm.css';
+import { UserContext } from '../../context';
 import { useFetching } from '../../hooks/useFetching';
 import Button from "../../UI/Button/Button";
 import Loader from '../../UI/Loader/Loader';
@@ -9,26 +10,26 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 const backURL = process.env.REACT_APP_backURL;
 const tg = window.Telegram.WebApp;
 
-const recipeSchema = {
-	img: "#",
-	title: "",
-	origin: "",
-	type: [],
-	ingredients: [],
-	quantities: [],
-	units: [],
-	cook: "",
-	difficulty: "",
-	time: 10,
-	rating: null,
-	ratingIterator: 0,
-	link: "",
-	author: tg.initDataUnsafe?.user?.username || "Muramat_Kuskov",
-	anonymously: false,
-	moderating: true
-}
-
 const RecipeForm = () => {
+	const { user } = useContext(UserContext);
+	const recipeSchema = {
+		img: "/assets/DishPlaceholder.png",
+		title: "",
+		origin: "",
+		type: [],
+		ingredients: [],
+		quantities: [],
+		units: [],
+		cook: "",
+		difficulty: "",
+		time: 10,
+		rating: null,
+		ratingIterator: 0,
+		link: "",
+		author: user._id,
+		anonymously: false,
+		moderating: true
+	}
 	const [recipe, setRecipe] = useState(recipeSchema);
 	const [pushResult, setPushResult] = useState('');
 
@@ -38,7 +39,7 @@ const RecipeForm = () => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ queryId: tg.initDataUnsafe.queryId, recipe })
+			body: JSON.stringify({ queryId: tg.initDataUnsafe.queryId, recipe, _id: user._id })
 		})
 			.then(res => {
 				handleResponse(res);
@@ -56,6 +57,7 @@ const RecipeForm = () => {
 	// tg MainButton appearance
 	useEffect(() => {
 		if (recipe.title.length > 2
+			&& recipe.type.length > 0
 			&& recipe.ingredients.length > 0
 			&& recipe.cook.length > 3
 		) {
@@ -65,7 +67,7 @@ const RecipeForm = () => {
 			})
 		}
 		return () => tg.MainButton.hide();
-	}, [recipe.title, recipe.ingredients.length, recipe.cook]);
+	}, [recipe.title, recipe.type, recipe.ingredients, recipe.cook]);
 
 	const setTitle = newTitle => {
 		setRecipe(prev => ({

@@ -10,54 +10,50 @@ const tg = window.Telegram.WebApp;
 
 function App() {
   const [currentPage, setCurrentPage] = useState();
-  const [user, setUser] = useState(tg.initDataUnsafe?.user);
+  const [user, setUser] = useState(null);
 
+  // init app
   useEffect(() => {
     register();
     tg.ready();
+    handleUser();
     setCurrentPage(<Index />);
   }, []);
 
-  useEffect(() => {
-    async function getUser() {
-      let data = await fetch(process.env.REACT_APP_backURL + "/getUser?name=" + user.username, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      data = await data.json();
-      return data[0];
+  async function handleUser() {
+    const data = await getUser();
+    if (data) {
+      return setUser(data);
     }
+    return createUser();
+  }
 
-    async function createUser() {
-      await fetch(process.env.REACT_APP_backURL + "/createUser", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ user })
-      })
-    }
+  async function getUser() {
+    let data = await fetch(process.env.REACT_APP_backURL + "/getUser?tgID=" + tg.initDataUnsafe.user.id, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    data = await data.json();
+    return data[0];
+  }
 
-    async function checkIfUserExists() {
-      const fetchUser = await getUser();
-      if (fetchUser) {
-        return setUser(fetchUser);
-      }
-      return createUser();
-    }
+  async function createUser() {
+    const username = tg.initDataUnsafe.user.username || (
+      tg.initDataUnsafe.user.last_name ?
+        tg.initDataUnsafe.user.first_name + tg.initDataUnsafe.user.last_name :
+        tg.initDataUnsafe.user.first_name
+    );
 
-    /* if (
-      !document.cookie?.split(';')?.filter(item => {
-        return item === "isFirstVisit=false"
-      }).length
-    ) {
-      
-    } */
-    checkIfUserExists();
-    // document.cookie = "isFirstVisit=false";
-  }, []);
+    await fetch(process.env.REACT_APP_backURL + "/createUser", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ tgID: tg.initDataUnsafe.user.id, username })
+    });
+  }
 
   return (
     <PageNavContext.Provider value={{
