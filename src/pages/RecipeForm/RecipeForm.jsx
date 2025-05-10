@@ -7,7 +7,6 @@ import Loader from '../../UI/Loader/Loader';
 import PopUp from '../../UI/PopUp/PopUp';
 import SearchBar from '../../components/SearchBar/SearchBar';
 
-const backURL = process.env.REACT_APP_backURL;
 const tg = window.Telegram.WebApp;
 
 const RecipeForm = () => {
@@ -34,7 +33,7 @@ const RecipeForm = () => {
 	const [pushResult, setPushResult] = useState('');
 
 	const [pushRecipe, isPushingRecipe, pushingError, setPushingError] = useFetching(async () => {
-		await fetch(backURL + "/pushRecipe", {
+		await fetch(process.env.REACT_APP_API_URL + "recipes/createRecipe", {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

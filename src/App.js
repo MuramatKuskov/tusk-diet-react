@@ -29,7 +29,7 @@ function App() {
   }
 
   async function getUser() {
-    let data = await fetch(process.env.REACT_APP_backURL + "/getUser?tgID=" + tg.initDataUnsafe.user.id, {
+    let data = await fetch(process.env.REACT_APP_API_URL + "users/getUserByTgID?tgID=" + tg.initDataUnsafe.user.id, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ function App() {
         tg.initDataUnsafe.user.first_name
     );
 
-    await fetch(process.env.REACT_APP_backURL + "/createUser", {
+    await fetch(process.env.REACT_APP_API_URL + "users/createUser", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

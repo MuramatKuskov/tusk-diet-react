@@ -105,7 +105,7 @@ const ShoppingList = () => {
 	const [updateTimeout, setUpdateTimeout] = useState(null);
 
 	const [sendListMessage, isSendingListMessage, sendingError] = useFetching(async () => {
-		await fetch(process.env.REACT_APP_backURL + "/sendListMsg", {
+		await fetch(process.env.REACT_APP_API_URL + "chat/sendList", {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

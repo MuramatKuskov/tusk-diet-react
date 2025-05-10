@@ -21,7 +21,7 @@ const SuggestedRecipes = (props) => {
 	const lastElementObserver = useRef();
 
 	const [fetchRecipes, isFetching, fetchError, setFetchError] = useFetching(async signal => {
-		const url = new URL(process.env.REACT_APP_backURL + "/getRecipes");
+		const url = new URL(process.env.REACT_APP_API_URL + "recipes/getRecipesByQuery");
 		url.search = new URLSearchParams({ ...query, skip });
 		let data = await fetch(url.toString(), {
 			method: 'GET',

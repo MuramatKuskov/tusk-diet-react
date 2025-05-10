@@ -9,7 +9,7 @@ const Recipe = (props) => {
 	const [recipe, setRecipe] = useState(props.recipe);
 
 	const [fetchRecipe, isFetching, fetchError, setFetchError] = useFetching(async signal => {
-		const url = new URL(process.env.REACT_APP_backURL + "/getRecipe?id=" + props.recipe._id);
+		const url = new URL(process.env.REACT_APP_API_URL + "recipes/getRecipeByID?id=" + props.recipe._id);
 		let data = await fetch(url.toString(), {
 			method: 'GET',
 			headers: {
@@ -28,7 +28,7 @@ const Recipe = (props) => {
 	});
 
 	const [sendToChat, isSending, sendingError] = useFetching(async () => {
-		await fetch(process.env.REACT_APP_backURL + "/sendRecipeMsg", {
+		await fetch(process.env.REACT_APP_API_URL + "chat/sendRecipe", {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ const Recipe = (props) => {
 	useEffect(() => {
 		if (recipe.cook) {
 			tg.MainButton.setParams({
-				text: 'Отправить покупки в чат с ботом'
+				text: 'Сохранить рецепт в чате с ботом'
 			});
 			tg.MainButton.show();
 		}
