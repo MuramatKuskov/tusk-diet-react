@@ -82,8 +82,6 @@ const Recipe = (props) => {
 	}
 
 	function addToList(i) {
-		// escape if recipe isn't fully loaded
-		if (!recipe.quantites || !recipe.units) return;
 		const updatedList = [...shoppingList, {
 			name: recipe.ingredients[i],
 			quantity: recipe.quantities[i],
