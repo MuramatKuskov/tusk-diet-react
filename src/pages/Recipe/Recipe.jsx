@@ -82,10 +82,12 @@ const Recipe = (props) => {
 	}
 
 	function addToList(i) {
+		// escape if recipe isn't fully loaded
+		if (!recipe.quantites || !recipe.units) return;
 		const updatedList = [...shoppingList, {
-			name: props.recipe.ingredients[i],
-			quantity: props.recipe.quantities[i],
-			unit: props.recipe.units[i]
+			name: recipe.ingredients[i],
+			quantity: recipe.quantities[i],
+			unit: recipe.units[i]
 		}];
 
 		tg.CloudStorage.setItem('shoppingList', JSON.stringify(updatedList), (err, result) => {

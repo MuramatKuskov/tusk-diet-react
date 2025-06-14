@@ -29,11 +29,12 @@ function App() {
   }
 
   async function getUser() {
-    let data = await fetch(process.env.REACT_APP_API_URL + "users/getUserByTgID?tgID=" + tg.initDataUnsafe.user.id, {
-      method: 'GET',
+    let data = await fetch(process.env.REACT_APP_API_URL + "users/getUserByTgID", {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ tgID: tg.initDataUnsafe.user.id })
     });
     data = await data.json();
     return data[0];
