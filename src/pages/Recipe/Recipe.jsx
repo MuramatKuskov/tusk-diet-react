@@ -100,7 +100,7 @@ const Recipe = (props) => {
 	}
 
 	function removeFromList(i) {
-		const filteredList = shoppingList.filter(el => el.name != props.recipe.ingredients[i]);
+		const filteredList = shoppingList.filter(el => el.name != recipe.ingredients[i]);
 
 		tg.CloudStorage.setItem('shoppingList', JSON.stringify(filteredList), (err, result) => {
 			if (err) {
