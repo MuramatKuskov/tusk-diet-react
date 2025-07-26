@@ -2,7 +2,7 @@
 
 **Culinary assistant & web-app inside a Telegram Bot**
 
-Available at (Tusk Diet)[https://t.me/TuskDietBot]
+Available at [Tusk Diet](https://t.me/TuskDietBot)
 
 ## Key Features
 
@@ -19,6 +19,7 @@ Available at (Tusk Diet)[https://t.me/TuskDietBot]
 	1. Add ingredients in storage to search query
 	2. Add ingredients in shopping list to search query
 - Search modes
+
 	3. Discovery: match recipes that contain ANY ingredients from lists and any more
 	4. Accessible: show only recipes with all ingredients available in the included lists
 	5. Precise: show recipes with exact ingresients match from all included lists
